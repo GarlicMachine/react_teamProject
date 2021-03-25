@@ -43,6 +43,7 @@ const ACCPWchange = React.lazy(() => import('./views/AccountInfo/ACCPWchange/ACC
 const AccountTransferList = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferList'));
 const AccInfo = React.lazy(() => import('./views/AccountInfo/AccList/AccInfo'));
 const FundList = React.lazy(() => import('./views/Fund/FundList/FundList'));
+const Chatbot = React.lazy(() => import('./views/ServiceCenter/Chatbot/Chatbot'));
 const AdminChatbot = React.lazy(() => import('./views/ServiceCenter/AdminChatbot/AdminChatbot'));
 const Notice = React.lazy(() => import('./views/ServiceCenter/Notice/Notice'));
 const NoticeDetail = React.lazy(() => import('./views/ServiceCenter/Notice/NoticeDetail'));
@@ -100,6 +101,7 @@ const routes = [
   { path: '/AccountInfo/AccInfo', exact: true, name: 'AccInfo', component: AccInfo },
   { path: '/AccountInfo/AccInfo/:id', exact: true, name: 'AccInfo', component: AccInfo },
   { path: '/Fund/FundList', name: 'FundList', component: FundList },
+  { path: '/ServiceCenter/Chatbot', name: 'Chatbot', component: Chatbot },
   { path: '/ServiceCenter/AdminChatbot', name: 'AdminChatbot', component: AdminChatbot },
   { path: '/ServiceCenter/Notice', exact: true,  name: 'Notice', component: Notice },
   { path: '/ServiceCenter/NoticeDetail/:N_NUM', exact: true,  name: 'Notice Details', component: NoticeDetail },
