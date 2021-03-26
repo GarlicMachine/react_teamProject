@@ -230,6 +230,11 @@ const _nav =  [
       },
       {
         _tag: 'CSidebarNavItem',
+        name: '고객상담',
+        to: '/ServiceCenter/Counseling',
+      },
+      {
+        _tag: 'CSidebarNavItem',
         name: '챗봇',
         to: '/ServiceCenter/Chatbot',
       },
@@ -237,16 +242,6 @@ const _nav =  [
         _tag: 'CSidebarNavItem',
         name: '챗봇설정',
         to: '/ServiceCenter/AdminChatbot',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: '이메일상담 리스트',
-        to: '/ServiceCenter/SendEmailCounseling',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: '채무 불이행자 목록',
-        to: '/ServiceCenter/ReminderMail',
       },
     ],
   },

@@ -9,7 +9,8 @@ import {
     CFormGroup,
     CTextarea,
     CInput,
-    CLabel
+    CLabel,
+    CSelect
   } from '@coreui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -17,18 +18,18 @@ import moment from 'moment'; // 날짜 타입
 import { useAsync } from 'react-async';
 import axios from 'axios';
 
-async function getNoticeModify({N_NUM}) {
-    console.log('getNoticeModify()1')
+async function getCounselingModify({B_NUM}) {
+    console.log('getCounselingModify()1')
     const response = await axios.get(
-        `/ServiceCenter/NoticeModify/${N_NUM}`
+        `/ServiceCenter/CounselingModify/${B_NUM}`
     );
-    console.log('getNoticeModify()2')
+    console.log('getCounselingModify()2')
     return response.data;
 }
 
-const NoticeModify = ({match}) => {
+const CounselingModify = ({match}) => {
     const { data: board, error, isLoading, reload } = useAsync({
-        promiseFn: getNoticeModify, N_NUM:match.params.N_NUM
+        promiseFn: getCounselingModify, B_NUM:match.params.B_NUM
     });
     if (isLoading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다</div>;
@@ -49,33 +50,49 @@ const NoticeModify = ({match}) => {
                     
                     <CCardBody>
                         
-                        <CForm action='/ServiceCenter/NoticeModifyAction' method="POST">
+                        <CForm action='/ServiceCenter/CounselingModifyAction' method="POST">
                             <CFormGroup row>
                             <CCol md="1">
-                                <CLabel htmlFor="N_DATE">작성일</CLabel>
+                                <CLabel htmlFor="B_DATE">작성일</CLabel>
                             </CCol>
                             <CCol xs="12" md="10">
-                                <p id="N_DATE" name="N_DATE">{nowTime}</p>
-                                <input type="hidden" id ="N_DATE" name="N_DATE" value={nowTime}></input>
-                                <input type="hidden" id ="N_NUM" name="N_NUM" value={board[0].글번호}></input>
+                                <p id="B_DATE" name="B_DATE">{nowTime}</p>
+                                <input type="hidden" id ="B_DATE" name="B_DATE" value={nowTime}></input>
+                                <input type="hidden" id ="B_NUM" name="B_NUM" value={board[0].글번호}></input>
                             </CCol>
                             </CFormGroup>
                             <CFormGroup row>
                             <CCol md="1">
-                                <CLabel htmlFor="N_TITLE">제목</CLabel>
+                                <CLabel htmlFor="B_CATEGORY">분류</CLabel>
+                            </CCol>
+                            <CCol xs="12" md="2">
+                            <CSelect custom name="B_CATEGORY" id="B_CATEGORY">
+                                <option value={board[0].분류}>{board[0].분류}</option>
+                                <option value="예금">예금</option>
+                                <option value="적금">적금</option>
+                                <option value="대출">대출</option>
+                                <option value="펀드">펀드</option>
+                                <option value="기타">기타</option>
+                            </CSelect>
+                            </CCol>
+                            </CFormGroup>
+                            <CFormGroup row></CFormGroup>
+                            <CFormGroup row>
+                            <CCol md="1">
+                                <CLabel htmlFor="B_TITLE">제목</CLabel>
                             </CCol>
                             <CCol xs="12" md="10">
-                                <CInput id="N_TITLE" name="N_TITLE" placeholder="제목" defaultValue={board[0].제목}></CInput>
+                                <CInput id="B_TITLE" name="B_TITLE" placeholder="제목" defaultValue={board[0].제목}></CInput>
                             </CCol>
                             </CFormGroup>
                             <CFormGroup row>
                             <CCol md="1">
-                                <CLabel htmlFor="N_CONTENT">내용</CLabel>
+                                <CLabel htmlFor="B_CONTENT">내용</CLabel>
                             </CCol>
                             <CCol xs="12" md="10">
                                 <CTextarea 
-                                name="N_CONTENT" 
-                                id="N_CONTENT" 
+                                name="B_CONTENT" 
+                                id="B_CONTENT" 
                                 rows="20"
                                 placeholder="내용" 
                                 defaultValue={board[0].내용}
@@ -86,9 +103,9 @@ const NoticeModify = ({match}) => {
                             </CFormGroup>
                             <CFormGroup row>
                             
-                            <CButton className="btn-facebook btn-brand mr-1 mb-1" type="submit" >글수정</CButton>
+                            <CButton className="btn-facebook btn-brand mr-1 mb-1" type="submit">글수정</CButton>
                             
-                            <Link to="../Notice">    
+                            <Link to="../Counseling">    
                                 <CButton className="btn-youtube btn-brand mr-1 mb-1">취소</CButton>
                             </Link>
                             </CFormGroup>
@@ -105,4 +122,4 @@ const NoticeModify = ({match}) => {
       )
 }
 
-export default NoticeModify
+export default CounselingModify

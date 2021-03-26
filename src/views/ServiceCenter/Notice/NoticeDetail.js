@@ -53,7 +53,9 @@ const NoticeDetail = ({match}) => {
                         <p align="right">조회: {board[0].조회}</p>
                     </CCardHeader>
                     <CCardBody>
+                        <p>&nbsp;</p>
                         {board[0].내용}
+                        <p>&nbsp;</p>
                     </CCardBody>
                 </CCard>
             </CCol>

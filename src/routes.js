@@ -43,14 +43,17 @@ const ACCPWchange = React.lazy(() => import('./views/AccountInfo/ACCPWchange/ACC
 const AccountTransferList = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferList'));
 const AccInfo = React.lazy(() => import('./views/AccountInfo/AccList/AccInfo'));
 const FundList = React.lazy(() => import('./views/Fund/FundList/FundList'));
+const FundListDetail = React.lazy(() => import('./views/Fund/FundList/FundListDetail'));
 const Chatbot = React.lazy(() => import('./views/ServiceCenter/Chatbot/Chatbot'));
 const AdminChatbot = React.lazy(() => import('./views/ServiceCenter/AdminChatbot/AdminChatbot'));
 const Notice = React.lazy(() => import('./views/ServiceCenter/Notice/Notice'));
 const NoticeDetail = React.lazy(() => import('./views/ServiceCenter/Notice/NoticeDetail'));
 const NoticeModify = React.lazy(() => import('./views/ServiceCenter/Notice/NoticeModify'));
 const NoticeWrite = React.lazy(() => import('./views/ServiceCenter/Notice/NoticeWrite'));
-const ReminderMail = React.lazy(() => import('./views/ServiceCenter/ReminderMail/ReminderMail'));
-const SendEmailCounseling = React.lazy(() => import('./views/ServiceCenter/SendEmailCounseling/SendEmailCounseling'));
+const Counseling = React.lazy(() => import('./views/ServiceCenter/Counseling/Counseling'));
+const CounselingWrite = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingWrite'));
+const CounselingDetail = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingDetail'));
+const CounselingModify = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingModify'));
 
 
 const routes = [
@@ -101,14 +104,17 @@ const routes = [
   { path: '/AccountInfo/AccInfo', exact: true, name: 'AccInfo', component: AccInfo },
   { path: '/AccountInfo/AccInfo/:id', exact: true, name: 'AccInfo', component: AccInfo },
   { path: '/Fund/FundList', name: 'FundList', component: FundList },
+  { path: '/Fund/FundListDetail/:F_NUM', name: 'FundList Details', component: FundListDetail },
   { path: '/ServiceCenter/Chatbot', name: 'Chatbot', component: Chatbot },
   { path: '/ServiceCenter/AdminChatbot', name: 'AdminChatbot', component: AdminChatbot },
   { path: '/ServiceCenter/Notice', exact: true,  name: 'Notice', component: Notice },
   { path: '/ServiceCenter/NoticeDetail/:N_NUM', exact: true,  name: 'Notice Details', component: NoticeDetail },
   { path: '/ServiceCenter/NoticeModify/:N_NUM', exact: true,  name: 'NoticeModify', component: NoticeModify },
   { path: '/ServiceCenter/NoticeWrite', name: 'NoticeWrite', component: NoticeWrite },
-  { path: '/ServiceCenter/ReminderMail', name: 'ReminderMail', component: ReminderMail },
-  { path: '/ServiceCenter/SendEmailCounseling', name: 'SendEmailCounseling', component: SendEmailCounseling },
+  { path: '/ServiceCenter/Counseling', name: 'Counseling', component: Counseling },
+  { path: '/ServiceCenter/CounselingWrite', name: 'CounselingWrite', component: CounselingWrite },
+  { path: '/ServiceCenter/CounselingDetail/:B_NUM', exact: true, name: 'Counseling Details', component: CounselingDetail },
+  { path: '/ServiceCenter/CounselingModify/:B_NUM', exact: true,  name: 'CounselingModify', component: CounselingModify },
 ];
 
 export default routes;
