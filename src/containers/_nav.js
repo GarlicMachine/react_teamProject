@@ -167,33 +167,33 @@ const _nav =  [
   icon: 'cil-star',
   _children: [
     {
-      _tag: 'CSidebarNavDropdown',
-  name: '대출상품',
-  route: '/charts',
-  _children: [
-    {
-      _tag: 'CSidebarNavItem',
-      name: '대출조회',
-      to: '/charts/ChartBarSimple',
-    },
-    {
-      _tag: 'CSidebarNavItem',
-      name: '대출등록',
-      to: '/charts/ChartLineSimple',
-    },
-    {
-      _tag: 'CSidebarNavItem',
-      name: '대출수정',
-      to: '/charts/Charts',
-    },
-    {
-      _tag: 'CSidebarNavItem',
-      name: '대출삭제',
-      to: '/charts/MainChartExample',
+          _tag: 'CSidebarNavDropdown',
+      name: '대출상품',
+      route: '/charts',
+      _children: [
+        {
+          _tag: 'CSidebarNavItem',
+          name: '대출조회',
+          to: '/LoansProduct/LoansProductList',
+        },
+        {
+          _tag: 'CSidebarNavItem',
+          name: '대출등록',
+          to: '/charts/ChartLineSimple',
+        },
+        {
+          _tag: 'CSidebarNavItem',
+          name: '대출수정',
+          to: '/charts/Charts',
+        },
+        {
+          _tag: 'CSidebarNavItem',
+          name: '대출삭제',
+          to: '/charts/MainChartExample',
+        },
+      ],
     },
   ],
-},
-],
 },
 {
   _tag: 'CSidebarNavTitle',
