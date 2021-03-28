@@ -42,6 +42,8 @@ const AccList = React.lazy(() => import('./views/AccountInfo/AccList/AccList'));
 const ACCPWchange = React.lazy(() => import('./views/AccountInfo/ACCPWchange/ACCPWchange'));
 const AccountTransferList = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferList'));
 const AccInfo = React.lazy(() => import('./views/AccountInfo/AccList/AccInfo'));
+const MemberInfo = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberInfo'));
+const MemberDetail = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberDetail'));
 
 
 const routes = [
@@ -91,6 +93,8 @@ const routes = [
   { path: '/AccountInfo/AccountTransferList', exact: true, name: 'AccountTransferList', component: AccountTransferList },
   { path: '/AccountInfo/AccInfo', exact: true, name: 'AccInfo', component: AccInfo },
   { path: '/AccountInfo/AccInfo/:id', exact: true, name: 'AccInfo', component: AccInfo },
+  { path: '/memberUpdate/MemberInfo', exact: true, name: 'MemberInfo', component: MemberInfo },
+  { path: '/MemberDetail/:id', exact: true, name: 'MemberDetail', component: MemberDetail },
 ];
 
 export default routes;
