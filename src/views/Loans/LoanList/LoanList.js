@@ -3,6 +3,7 @@ import { CRow, CCol, CCard, CCardHeader, CCardBody, CDataTable, CButton, CForm, 
 import axios from 'axios';
 import { useHistory, useLocation } from 'react-router';
 import { useAsync } from 'react-async';
+import usersData from '../../users/UsersData'
 
 async function getLoanList() {
     console.log('getLoanList_1')
@@ -38,14 +39,14 @@ const LoanList = ({match}) => {
         {key : 'loans_approve'}
     ]
 
-    const {data : board, error, isLoding, reload} = useAsync ({
+    /* const {data : board, error, isLoading, reload} = useAsync ({
         promiseFn : getLoanList
     });
 
-    if(isLoding) return <div>로딩중..</div>;
+    if(isLoading) return <div>로딩중..</div>;
     if(error) return <div>에러가 발생했습니다.</div>;
     if(!board) return <button onClick={reload}>불러오기</button>;
-    console.log(board.length)
+    console.log(board.length) */
 
     return (
         <>
@@ -57,7 +58,7 @@ const LoanList = ({match}) => {
                         </CCardHeader>
                         <CCardBody>
                             <CDataTable
-                                items={board}
+                                items={usersData}
                                 fields={fields}
                                 tableFilter
                                 itemsPerPageSelect
@@ -66,8 +67,8 @@ const LoanList = ({match}) => {
                                 bordered
                                 size="sm"
                                 itemsPerPage={10}
+                                activePage={page}
                                 clickableRows
-                                // pagination
                                 scopedSlots = {{
                                     '조회':
                                     (item) => (
@@ -89,7 +90,7 @@ const LoanList = ({match}) => {
                             <CPagination 
                                 activePage={page}
                                 onActivePageChange={pageChange}
-                                pages={board.length/5+1}
+                                pages={usersData}
                                 doubleArrows={false}
                                 align="center"
                             />
