@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { CRow, CCol, CCard, CCardHeader, CCardBody, CDataTable, CButton, CForm, CPagination} from '@coreui/react';
-import LoansData from '../../users/LoansData'
 import axios from 'axios';
 import { useHistory, useLocation } from 'react-router';
 import { useAsync } from 'react-async';
