@@ -3,6 +3,7 @@ import React from 'react';
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 
+
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/base/cards/Cards'));
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'));
@@ -50,6 +51,8 @@ const NoticeModify = React.lazy(() => import('./views/ServiceCenter/Notice/Notic
 const NoticeWrite = React.lazy(() => import('./views/ServiceCenter/Notice/NoticeWrite'));
 const ReminderMail = React.lazy(() => import('./views/ServiceCenter/ReminderMail/ReminderMail'));
 const SendEmailCounseling = React.lazy(() => import('./views/ServiceCenter/SendEmailCounseling/SendEmailCounseling'));
+const LoanList = React.lazy(() => import('./views/Loans/LoanList/LoanList'));
+const LoansProductList = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductList'));
 
 
 const routes = [
@@ -107,6 +110,9 @@ const routes = [
   { path: '/ServiceCenter/NoticeWrite', name: 'NoticeWrite', component: NoticeWrite },
   { path: '/ServiceCenter/ReminderMail', name: 'ReminderMail', component: ReminderMail },
   { path: '/ServiceCenter/SendEmailCounseling', name: 'SendEmailCounseling', component: SendEmailCounseling },
+  { path: '/Loans/LoanList', name: 'LoanList', component: LoanList},
+  { path: '/LoansProduct/LoansProductList', name: 'LoansProductList', component: LoansProductList },
+  
 ];
 
 export default routes;
