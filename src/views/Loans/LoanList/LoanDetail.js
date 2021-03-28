@@ -1,51 +1,48 @@
-import { CButton, CCard, CCardBody, CCardFooter, CCardHeader, CCol, CRow } from '@coreui/react';
-import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router';
+import React from 'react'
+import { CButton, CCard, CCardBody, CCardFooter, CCardHeader, CCol, CDataTable, CRow } from '@coreui/react';
 import { Link } from 'react-router-dom';
+import { useAsync } from 'react-async';
 import axios from 'axios';
 
-async function getLoanDetail({d_Key}) {
+async function getLoanDetail({D_KEY}) {
     console.log('getLoanDetail_1')
     const response = await axios.get(
-        '/Loans/LoanDetail/${d_Key}'
+        `/Loans/LoanList/LoanDetail/${D_KEY}`
     );
     console.log('getLoanDetail_2')
-    return response.LoansData;
+    return response.data;
 }
 
 const LoanDetail = ({match}) => {
-   /*  const {data : board, error, isLoading, reload} = useAsync ({
-        promiseFn : getLoanDetail, d_Key:match.params.d_Key
-    }); */
-    const history = useHistory()
-    const queryPage = useLocation().search.match(/page=([0-9]+)/, '')
-    const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1)
-    const [page, setPage] = useState(currentPage)
-
-    /* useEffect(() => {
-        currentPage !== page && setPage(currentPage)
-    }, [currentPage, page])
+    const {data : board, error, isLoading, reload} = useAsync ({
+        promiseFn : getLoanDetail, D_KEY:match.params.D_KEY
+    });
 
     if (isLoading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다.</div>;
     if (!board) return <button onClick={reload}>불러오기</button>;
-    console.log(board) */
+    console.log(board)
 
     return (
         <>
         <CRow>
             <CCol lg={12}>
                 <CCard accentColor="success">
+                
                     <CCardHeader>
-                        <p align="center"><h1><string>213</string></h1></p>
-                    </CCardHeader>]
+                        <p align="center"><h1><string></string></h1></p>
+                        <p align="center"><strong>{board[0].대출번호}ddd</strong></p>
+                    </CCardHeader>
                     <CCardBody>
                         <p align="left">대출종류 : <font color="gray">12323</font></p>
                     </CCardBody>
+                    <CCardFooter>
+                        <p>냐냐</p>
+                    </CCardFooter>
                 </CCard>
             </CCol>
         </CRow>
-        <Link to="../LoanList">
+        <Link to="/Loans/LoanList/">
             <CButton className="btn-facebook btn-brand mr-1 mb-1">뒤로가기</CButton>
         </Link>
         </>

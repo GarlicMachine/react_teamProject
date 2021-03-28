@@ -52,6 +52,7 @@ const NoticeWrite = React.lazy(() => import('./views/ServiceCenter/Notice/Notice
 const ReminderMail = React.lazy(() => import('./views/ServiceCenter/ReminderMail/ReminderMail'));
 const SendEmailCounseling = React.lazy(() => import('./views/ServiceCenter/SendEmailCounseling/SendEmailCounseling'));
 const LoanList = React.lazy(() => import('./views/Loans/LoanList/LoanList'));
+const LoanDetail = React.lazy(() => import('./views/Loans/LoanList/LoanDetail'));
 const LoansProductList = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductList'));
 
 
@@ -110,8 +111,9 @@ const routes = [
   { path: '/ServiceCenter/NoticeWrite', name: 'NoticeWrite', component: NoticeWrite },
   { path: '/ServiceCenter/ReminderMail', name: 'ReminderMail', component: ReminderMail },
   { path: '/ServiceCenter/SendEmailCounseling', name: 'SendEmailCounseling', component: SendEmailCounseling },
-  { path: '/Loans/LoanList', name: 'LoanList', component: LoanList},
-  { path: '/LoansProduct/LoansProductList', name: 'LoansProductList', component: LoansProductList },
+  { path: '/Loans/LoanList', exact: true, name: 'LoanList', component: LoanList},
+  { path: '/Loans/LoanList/LoanDetail/:D_KEY', exact: true, name: 'LoanDetail', component: LoanDetail },
+  { path: '/LoansProduct/LoansProductList', exact: true, name: 'LoansProductList', component: LoansProductList }
   
 ];
 

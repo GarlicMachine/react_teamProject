@@ -112,7 +112,146 @@ app.get('/useAcc/:account', function(request, response){
 // 디비 연결해제
 
 
+// 박서하
+// 대출 조회
+app.get('/Loans/LoanList', function(request, response){
+    console.log('---대출 조회---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'SELECT l.d_Key 대출번호, i.ID 아이디, l.d_name 대출명, l.account 계좌번호, l.d_start_date 대출실행일, l.d_end_date 대출만기일, l.d_amount 대출금액, l.d_state 대출상태 FROM account_info i, loans l WHERE i.account = l.account ORDER BY l.d_Key DESC';
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+// 디비 연결해제
+// 박서하
+// --------------------------------------------
 
+// --------------------------------------------
+// 박서하
+// 대출 상세조회
+app.get('/Loans/LoanList/LoanDetail/:D_KEY', function(request, response){
+    console.log('---대출 상세조회---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'SELECT l.d_Key 대출번호, i.ID 아이디, l.d_name 대출명, l.account 계좌번호, l.d_start_date 대출실행일, l.d_end_date 대출만기일, l.d_amount 대출금액, l.d_state 대출상태 FROM account_info i, loans l WHERE i.account = l.account AND D_KEY = :D_KEY';
+        var binddata = [
+            request.param("D_KEY"),
+        ]
+
+        connection.execute(query, binddata, {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+// 디비 연결해제
+// 박서하
+// --------------------------------------------
+
+// --------------------------------------------
+// 박서하
+// 대출 승인
+router.get('/Loans/LoanList/LoanAproval/:D_KEY', function(request, response){
+    console.log('---대출 승인---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'UPDATE Loans SET d_state = 1 WHERE D_KEY = :D_KEY';
+        var binddata = [
+            request.body.D_KEY,
+        ]
+
+        connection.execute(query, binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log('Row Update : ' + result.rowsAffected);   // 데이터
+            doRelease(connection, result.rowsAffected); // connection 해제
+            response.redirect('/Loans/LoanList/');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log(rowList);
+        });
+    }
+});
+// 디비 연결해제
+// 박서하
+// --------------------------------------------
 
 //========================================================
 
