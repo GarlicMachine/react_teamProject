@@ -61,6 +61,7 @@
   "scripts": {
     "chat": "node chat-server.js",
     "rpa": "C:/Users/kosmo_10/AppData/Local/UiPath/app-20.10.6/UiRobot.exe execute --file C:/Users/kosmo_10/Documents/UiPath/teamProject_RPA/Main.xaml",
+    "db": "cd src/views/users && nodemon db.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
