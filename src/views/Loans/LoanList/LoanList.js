@@ -66,7 +66,7 @@ const LoanList = () => {
                                 striped
                                 bordered
                                 size="sm"
-                                itemsPerPage={5}
+                                itemsPerPage={10}
                                 activePage={page}
                                 clickableRows
                                 scopedSlots = {{
@@ -78,22 +78,27 @@ const LoanList = () => {
                                     ),
 									'승인' : 
 									(item)=>(
-										<td>
-                                            {/* <CForm action='/Loans/LoanList/LoanAproval' method="POST">
-                                                <input type="hidden" id ="D_KEY" name="D_KEY" value={item.대출번호}></input>
-                                                <CButton size="sm" type="submit" className="btn-facebook btn-brand mr-1 mb-1" >승인</CButton>
-                                            </CForm> */}
-                                            
-                                            {/*  <CButton size="sm" color="primary" onClick={() =>getLoanUpdate(item.대출번호)}>승인2</CButton> */}
-                                            <CButton size="sm" className="btn-facebook btn-brand mr-1 mb-1" onClick={() => history.push(`/Loans/LoanList/LoanAproval/${item.대출번호}`)}>승인</CButton>
-                                    	</td>
+                                        <>
+                                            {item.대출상태=== 0 ?
+                                                <>
+                                                    <td>
+                                                        <CForm action='/Loans/LoanList/LoanAprovalAction' method="POST">
+                                                            <input type="hidden" id ="D_KEY" name="D_KEY" value={item.대출번호}></input>
+                                                            <CButton size="sm" type="submit" className="btn-facebook btn-brand mr-1 mb-1" >승인</CButton>
+                                                        </CForm>
+                                                    </td>
+                                                </>
+                                            :
+                                                <td></td>
+                                            }
+                                        </>
 									)
 								}}
                             />
                             <CPagination 
                                 activePage={page}
                                 onActivePageChange={pageChange}
-                                pages={board.length/5 + 1}
+                                pages={board.length/10 + 1}
                                 doubleArrows={false}
                                 align="center"
                             />

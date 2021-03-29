@@ -191,17 +191,7 @@ const _nav =  [
         {
           _tag: 'CSidebarNavItem',
           name: '대출상품등록',
-          to: '/charts/ChartLineSimple',
-        },
-        {
-          _tag: 'CSidebarNavItem',
-          name: '대출상품수정',
-          to: '/charts/Charts',
-        },
-        {
-          _tag: 'CSidebarNavItem',
-          name: '대출상품삭제',
-          to: '/charts/MainChartExample',
+          to: '/LoansProduct/LoansProductList/LoansProductInsert',
         },
       ],
     },

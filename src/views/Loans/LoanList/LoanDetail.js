@@ -1,5 +1,5 @@
 import React from 'react'
-import { CButton, CCard, CCardBody, CCardFooter, CCardHeader, CCol, CDataTable, CRow } from '@coreui/react';
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react';
 import { Link } from 'react-router-dom';
 import { useAsync } from 'react-async';
 import axios from 'axios';
@@ -28,17 +28,17 @@ const LoanDetail = ({match}) => {
         <CRow>
             <CCol lg={12}>
                 <CCard accentColor="success">
-                
                     <CCardHeader>
-                        <p align="center"><h1><string></string></h1></p>
-                        <p align="center"><strong>{board[0].대출번호}ddd</strong></p>
+                        <p align="center"><h1><strong>[{board[0].대출번호}] {board[0].대출명}</strong></h1></p>
                     </CCardHeader>
                     <CCardBody>
-                        <p align="left">대출종류 : <font color="gray">12323</font></p>
+                        <p align="left">아이디 : <font color="gray">{board[0].아이디}</font></p>
+                        <p align="left">계좌번호 : <font color="gray">{board[0].계좌번호}</font></p>
+                        <p align="left">대출실행일 : <font color="gray">{board[0].대출실행일}</font></p>
+                        <p align="left">대출만기일 : <font color="gray">{board[0].대출만기일}</font></p>
+                        <p align="left">대출금액 : <font color="gray">{board[0].대출금액}</font></p>
+                        <p align="left">대출상태 : <font color="gray">{board[0].대출상태}</font></p>
                     </CCardBody>
-                    <CCardFooter>
-                        <p>냐냐</p>
-                    </CCardFooter>
                 </CCard>
             </CCol>
         </CRow>
@@ -48,6 +48,5 @@ const LoanDetail = ({match}) => {
         </>
     )
 }
-
 
 export default LoanDetail

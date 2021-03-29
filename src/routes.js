@@ -54,7 +54,9 @@ const SendEmailCounseling = React.lazy(() => import('./views/ServiceCenter/SendE
 const LoanList = React.lazy(() => import('./views/Loans/LoanList/LoanList'));
 const LoanDetail = React.lazy(() => import('./views/Loans/LoanList/LoanDetail'));
 const LoansProductList = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductList'));
-
+const LoansProductDetail = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductDetail'));
+const LoansProductModify = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductModify'));
+const LoansProductInsert = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductInsert'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -113,8 +115,10 @@ const routes = [
   { path: '/ServiceCenter/SendEmailCounseling', name: 'SendEmailCounseling', component: SendEmailCounseling },
   { path: '/Loans/LoanList', exact: true, name: 'LoanList', component: LoanList},
   { path: '/Loans/LoanList/LoanDetail/:D_KEY', exact: true, name: 'LoanDetail', component: LoanDetail },
-  { path: '/LoansProduct/LoansProductList', exact: true, name: 'LoansProductList', component: LoansProductList }
-  
+  { path: '/LoansProduct/LoansProductList', exact: true, name: 'LoansProductList', component: LoansProductList },
+  { path: '/LoansProduct/LoansProductList/LoansProductDetail/:D_NAME', export: true, name: 'LoansProductDetail', component: LoansProductDetail },
+  { path: '/LoansProduct/LoansProductList/LoansProductModify/:D_NAME', export: true, name: 'LoansProductModify', component : LoansProductModify },
+  { path: '/LoansProduct/LoansProductList/LoansProductInsert', export: true, name: 'LoansProductInsert', component : LoansProductInsert }
 ];
 
 export default routes;
