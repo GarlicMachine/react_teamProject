@@ -32,7 +32,7 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: '정보수정',
-        to: '/base/breadcrumbs',
+        to: '/memberUpdate/MemberInfo',
       },
       {
         _tag: 'CSidebarNavItem',

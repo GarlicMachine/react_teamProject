@@ -112,8 +112,143 @@ app.get('/useAcc/:account', function(request, response){
 // 디비 연결해제
 
 
+//김세엽
+//회원정보리스트
+app.get('/memberInfo', function(request, response){
+    console.log('---test_ select---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'SELECT name 이름, id 아이디, jumin 주민번호 FROM members';
+        
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
 
+//김세엽
+//회원정보 상세페이지
+app.get('/memberDetail/:id', function(request, response){
+    console.log('---test2_ select---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'SELECT * FROM members WHERE id=:id';
+       
+        var binddata = [
+            request.param("id")
+        ]
+        connection.execute(query,binddata, {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
 
+//김세엽
+//회원정보수정
+router.post('/memberUpdate', function(request, response){
+    console.log('---test2_ select---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+
+        let query = 'UPDATE members set NAME=:NAME, EMAIL=:EMAIL ,  PHONE=:PHONE ,JOB=:JOB, AUTHORITY=:AUTHORITY WHERE ID=:ID';
+
+        var binddata = [
+            request.body.NAME,
+            request.body.EMAIL,
+            request.body.PHONE,
+            request.body.JOB,
+            request.body.AUTHORITY,
+            request.body.ID,
+        ]
+        connection.execute(query,binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('#/memberUpdate/MemberInfo');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
 //========================================================
 
 // 라우터 객체를 app 객체에 등록

@@ -19,7 +19,7 @@ import axios from 'axios';
 
 async function getUsers({account}) {
   const response = await axios.get(
-      `/useAcc/${account}`
+      `/useAcc${account}`
   );
   return response.data;
 }

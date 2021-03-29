@@ -42,6 +42,7 @@ const AccList = React.lazy(() => import('./views/AccountInfo/AccList/AccList'));
 const ACCPWchange = React.lazy(() => import('./views/AccountInfo/ACCPWchange/ACCPWchange'));
 const AccountTransferList = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferList'));
 const AccInfo = React.lazy(() => import('./views/AccountInfo/AccList/AccInfo'));
+<<<<<<< HEAD
 const FundList = React.lazy(() => import('./views/Fund/FundList/FundList'));
 const FundListDetail = React.lazy(() => import('./views/Fund/FundList/FundListDetail'));
 const Chatbot = React.lazy(() => import('./views/ServiceCenter/Chatbot/Chatbot'));
@@ -54,6 +55,10 @@ const Counseling = React.lazy(() => import('./views/ServiceCenter/Counseling/Cou
 const CounselingWrite = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingWrite'));
 const CounselingDetail = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingDetail'));
 const CounselingModify = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingModify'));
+=======
+const MemberInfo = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberInfo'));
+const MemberDetail = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberDetail'));
+>>>>>>> dev_ksy
 
 
 const routes = [
@@ -103,6 +108,7 @@ const routes = [
   { path: '/AccountInfo/AccountTransferList', exact: true, name: 'AccountTransferList', component: AccountTransferList },
   { path: '/AccountInfo/AccInfo', exact: true, name: 'AccInfo', component: AccInfo },
   { path: '/AccountInfo/AccInfo/:id', exact: true, name: 'AccInfo', component: AccInfo },
+<<<<<<< HEAD
   { path: '/Fund/FundList', name: 'FundList', component: FundList },
   { path: '/Fund/FundListDetail/:F_NUM', name: 'FundList Details', component: FundListDetail },
   { path: '/ServiceCenter/Chatbot', name: 'Chatbot', component: Chatbot },
@@ -115,6 +121,10 @@ const routes = [
   { path: '/ServiceCenter/CounselingWrite', name: 'CounselingWrite', component: CounselingWrite },
   { path: '/ServiceCenter/CounselingDetail/:B_NUM', exact: true, name: 'Counseling Details', component: CounselingDetail },
   { path: '/ServiceCenter/CounselingModify/:B_NUM', exact: true,  name: 'CounselingModify', component: CounselingModify },
+=======
+  { path: '/memberUpdate/MemberInfo', exact: true, name: 'MemberInfo', component: MemberInfo },
+  { path: '/MemberDetail/:id', exact: true, name: 'MemberDetail', component: MemberDetail },
+>>>>>>> dev_ksy
 ];
 
 export default routes;
