@@ -3,6 +3,7 @@ import { CCard, CCardBody, CCardHeader, CCol, CRow, CDataTable, CButton, CPagina
 import { useHistory, useLocation } from 'react-router';
 import { useAsync } from 'react-async';
 import axios from 'axios';
+import moment from 'moment';
 
 async function getLoansProductList () {
 	console.log('getLoansProductList_1')
@@ -68,17 +69,40 @@ const LoansProductList = () => {
 								activePage={page}
 								clickableRows
 								scopedSlots = {{
-									
-									'조회' : 
+									'대출금리' :
 									(item) => (
 										<td>
-											<CButton size="sm" color="primary" onClick={() => history.push(`/LoansProduct/LoansProductList/LoansProductDetail/${item.대출명}`)}>조회</CButton>
+											{item.대출금리}%
 										</td>
 									),
 									'최소대출금액' : 
 									(item) => (
 										<td>
 											{item.최소대출금액}억원	
+										</td>
+									),
+									'최대대출금액' : 
+									(item) => (
+										<td>
+											{item.최대대출금액}억원	
+										</td>
+									),
+									'최소대출기간' : 
+									(item) => (
+										<td>
+											{item.최소대출기간}년
+										</td>
+									),
+									'최대대출기간' : 
+									(item) => (
+										<td>
+											{item.최대대출기간}년
+										</td>
+									),
+									'조회' : 
+									(item) => (
+										<td>
+											<CButton size="sm" color="primary" onClick={() => history.push(`/LoansProduct/LoansProductList/LoansProductDetail/${item.대출명}`)}>조회</CButton>
 										</td>
 									)
 								}}

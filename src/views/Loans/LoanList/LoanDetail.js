@@ -36,7 +36,7 @@ const LoanDetail = ({match}) => {
                         <p align="left">계좌번호 : <font color="gray">{board[0].계좌번호}</font></p>
                         <p align="left">대출실행일 : <font color="gray">{board[0].대출실행일}</font></p>
                         <p align="left">대출만기일 : <font color="gray">{board[0].대출만기일}</font></p>
-                        <p align="left">대출금액 : <font color="gray">{board[0].대출금액}</font></p>
+                        <p align="left">대출금액 : <font color="gray">{board[0].대출금액.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</font>원</p>
                         <p align="left">대출상태 : <font color="gray">{board[0].대출상태}</font></p>
                     </CCardBody>
                 </CCard>

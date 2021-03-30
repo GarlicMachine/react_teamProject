@@ -129,7 +129,7 @@ app.get('/Loans/LoanList', function(request, response){
             return;
         }
         console.log('접속 성공');
-        let query = 'SELECT l.d_Key 대출번호, i.ID 아이디, l.d_name 대출명, l.account 계좌번호, l.d_start_date 대출실행일, l.d_end_date 대출만기일, l.d_amount 대출금액, l.d_state 대출상태 FROM account_info i, loans l WHERE i.account = l.account ORDER BY l.d_Key DESC';
+        let query = "SELECT l.d_Key 대출번호, i.ID 아이디, l.d_name 대출명, l.account 계좌번호, TO_CHAR(l.d_start_date,'yyyy-mm-dd') 대출실행일, TO_CHAR(l.d_end_date,'yyyy-mm-dd') 대출만기일, l.d_amount 대출금액, l.d_state 대출상태 FROM account_info i, loans l WHERE i.account = l.account ORDER BY l.d_Key DESC";
         connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
             if(err){
                 console.error(err.message);
@@ -174,7 +174,7 @@ app.get('/Loans/LoanList/LoanDetail/:D_KEY', function(request, response){
             return;
         }
         console.log('접속 성공');
-        let query = 'SELECT l.d_Key 대출번호, i.ID 아이디, l.d_name 대출명, l.account 계좌번호, l.d_start_date 대출실행일, l.d_end_date 대출만기일, l.d_amount 대출금액, l.d_state 대출상태 FROM account_info i, loans l WHERE i.account = l.account AND D_KEY = :D_KEY';
+        let query = "SELECT l.d_Key 대출번호, i.ID 아이디, l.d_name 대출명, l.account 계좌번호, TO_CHAR(l.d_start_date,'yyyy-mm-dd') 대출실행일, TO_CHAR(l.d_end_date,'yyyy-mm-dd') 대출만기일, l.d_amount 대출금액, l.d_state 대출상태 FROM account_info i, loans l WHERE i.account = l.account AND D_KEY = :D_KEY";
         var binddata = [
             request.param("D_KEY")
         ]
@@ -270,7 +270,7 @@ app.get('/LoansProduct/LoansProductList', function(request, response){
             return;
         }
         console.log('접속 성공');
-        let query = 'SELECT d_name 대출명, d_date 대출등록일, d_interest_rate 대출금리, d_min_price 최소대출금액, d_max_price 최대대출금액, d_min_date 최소대출기간, d_max_date 최대대출기간 FROM Loans_product ORDER BY d_date DESC';
+        let query = "SELECT d_name 대출명, TO_CHAR(d_date,'yyyy-mm-dd') 대출등록일, d_interest_rate 대출금리, d_min_price 최소대출금액, d_max_price 최대대출금액, d_min_date 최소대출기간, d_max_date 최대대출기간 FROM Loans_product ORDER BY d_date DESC";
         connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
             if(err){
                 console.error(err.message);
@@ -315,7 +315,7 @@ app.get('/LoansProduct/LoansProductList/LoansProductDetail/:D_NAME', function(re
             return;
         }
         console.log('접속 성공');
-        let query = 'SELECT d_name 대출명, d_date 대출등록일, d_interest_rate 대출금리, d_summary 대출요약, d_min_price 최소대출금액, d_max_price 최대대출금액, d_min_date 최소대출기간, d_max_date 최대대출기간, d_explanation1 설명1, d_explanation2 설명2, d_explanation3 설명3 FROM Loans_product WHERE D_NAME = :D_NAME';
+        let query = "SELECT d_name 대출명, TO_CHAR(d_date,'yyyy-mm-dd') 대출등록일, d_interest_rate 대출금리, d_summary 대출요약, d_min_price 최소대출금액, d_max_price 최대대출금액, d_min_date 최소대출기간, d_max_date 최대대출기간, d_explanation1 설명1, d_explanation2 설명2, d_explanation3 설명3 FROM Loans_product WHERE D_NAME = :D_NAME";
         var binddata = [
             request.param("D_NAME"),
         ]
@@ -350,7 +350,7 @@ app.get('/LoansProduct/LoansProductList/LoansProductDetail/:D_NAME', function(re
 // --------------------------------------------
 // 박서하
 // 대출상품 등록
-app.get('/LoansProduct/LoansProductList/LoansProductInsertAction', function(request, response){
+router.post('/LoansProduct/LoansProductList/LoansProductInsertAction', function(request, response){
     console.log('---대출상품 등록---');
     oracledb.getConnection({
         user : dbConfig.user,
@@ -364,16 +364,29 @@ app.get('/LoansProduct/LoansProductList/LoansProductInsertAction', function(requ
             return;
         }
         console.log('접속 성공');
-        let query = 'INSERT INTO Loans_product (d_name, d_date, d_interest_rate, d_summary, d_min_price, d_max_price, d_min_date, d_max_date, d_explanation1, d_explanation2, d_explanation3) VALUES(:D_NAME, :D_DATE, :D_INTEREST_RATE, :D_SUMMARY, :D_MIN_PRICE, :D_MAX_PRICE, :D_MIN_PRICE, :D_MAX_DATE, :D_EXPLANATION1, :D_EXPLANATION2, :D_EXPLANATION3)';       
-        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+        let query = 'INSERT INTO Loans_product (d_name, d_date, d_interest_rate, d_summary, d_min_price, d_max_price, d_min_date, d_max_date, d_explanation1, d_explanation2, d_explanation3) VALUES(:D_NAME, :D_DATE, :D_INTEREST_RATE, :D_SUMMARY, :D_MIN_PRICE, :D_MAX_PRICE, :D_MIN_DATE, :D_MAX_DATE, :D_EXPLANATION1, :D_EXPLANATION2, :D_EXPLANATION3)';       
+        var binddata = [
+            request.body.D_NAME,
+            request.body.D_DATE,
+            request.body.D_INTEREST_RATE,
+            request.body.D_SUMMARY,
+            request.body.D_MIN_PRICE,
+            request.body.D_MAX_PRICE,
+            request.body.D_MIN_DATE,
+            request.body.D_MAX_DATE,
+            request.body.D_EXPLANATION1,
+            request.body.D_EXPLANATION2,
+            request.body.D_EXPLANATION3
+        ]
+        connection.execute(query, binddata, function(err, result){
             if(err){
                 console.error(err.message);
                 doRelease(connection);
                 return;
             }
-            console.log(result.rows);   // 데이터
+            console.log('Row Insert' + result.rowsAffected);   // 데이터
             doRelease(connection, result.rowsAffected); // connection 해제
-            response.send(result.rowsAffected);
+            response.redirect('#/LoansProduct/LoansProductList');
         });
     });
     // 디비 연결 해제
@@ -515,7 +528,7 @@ router.post('/LoansProduct/LoansProductList/LoansProductDeleteAction', function(
         console.log('접속 성공');
         let query = 'DELETE Loans_product WHERE D_NAME = :D_NAME';
         var binddata = [
-            request.body.D_KEY
+            request.body.D_NAME
         ]
         connection.execute(query, binddata, function(err, result){
             if(err){

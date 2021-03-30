@@ -46,7 +46,7 @@ const LoansProductModify = ({match}) => {
                                 <CCol md="1">
                                     <CLabel htmlFor="D_INTEREST_RATE">대출금리</CLabel>
                                 </CCol>
-                                <CCol xs="12" md="10">
+                                <CCol xs="12" md="3">
                                     <CInput id="D_INTEREST_RATE" name="D_INTEREST_RATE" placeholder="대출금리" defaultValue={board[0].대출금리}></CInput>
                                 </CCol>
                             </CFormGroup>
@@ -60,33 +60,33 @@ const LoansProductModify = ({match}) => {
                             </CFormGroup>
                             <CFormGroup row>
                                 <CCol md="1">
-                                    <CLabel htmlFor="D_MIN_PRICE">최소대출금액(억원)</CLabel>
+                                    <CLabel htmlFor="D_MIN_PRICE">최소대출금액</CLabel>
                                 </CCol>
-                                <CCol xs="12" md="10">
+                                <CCol xs="12" md="3">
                                     <CInput id="D_MIN_PRICE" name="D_MIN_PRICE" placeholder="최소대출금액" defaultValue={board[0].최소대출금액}></CInput>
                                 </CCol>
                             </CFormGroup>
                             <CFormGroup row>
                                 <CCol md="1">
-                                    <CLabel htmlFor="D_MAX_PRICE">최대대출금액(억원)</CLabel>
+                                    <CLabel htmlFor="D_MAX_PRICE">최대대출금액</CLabel>
                                 </CCol>
-                                <CCol xs="12" md="10">
+                                <CCol xs="12" md="3">
                                     <CInput id="D_MAX_PRICE" name="D_MAX_PRICE" placeholder="최대대출금액" defaultValue={board[0].최대대출금액}></CInput>
                                 </CCol>
                             </CFormGroup>
                             <CFormGroup row>
                                 <CCol md="1">
-                                    <CLabel htmlFor="D_MIN_DATE">최소대출기간(년)</CLabel>
+                                    <CLabel htmlFor="D_MIN_DATE">최소대출기간</CLabel>
                                 </CCol>
-                                <CCol xs="12" md="10">
+                                <CCol xs="12" md="3">
                                     <CInput id="D_MIN_DATE" name="D_MIN_DATE" placeholder="최소대출기간" defaultValue={board[0].최소대출기간}></CInput>
                                 </CCol>
                             </CFormGroup>
                             <CFormGroup row>
                                 <CCol md="1">
-                                    <CLabel htmlFor="D_MAX_DATE">최대대출기간(년)</CLabel>
+                                    <CLabel htmlFor="D_MAX_DATE">최대대출기간</CLabel>
                                 </CCol>
-                                <CCol xs="12" md="10">
+                                <CCol xs="12" md="3">
                                     <CInput id="D_MAX_DATE" name="D_MAX_DATE" placeholder="최대대출기간" defaultValue={board[0].최대대출기간}></CInput>
                                 </CCol>
                             </CFormGroup>

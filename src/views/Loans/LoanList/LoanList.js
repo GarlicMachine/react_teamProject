@@ -70,6 +70,12 @@ const LoanList = () => {
                                 activePage={page}
                                 clickableRows
                                 scopedSlots = {{
+                                    '대출금액' :
+                                    (item) => (
+                                        <td>
+                                            {item.대출금액.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                                        </td>
+                                    ),
                                     '조회' :
                                     (item) => (
                                         <td>
