@@ -12,32 +12,20 @@ import { useAsync } from "react-async";
 import axios from 'axios';
 
 
-const getBadge = status => {
-  switch (status) {
-    case 'Active': return 'success'
-    case 'Inactive': return 'secondary'
-    case 'Pending': return 'warning'
-    case 'Banned': return 'danger'
-    default: return 'primary'
-  }
-}
-
-async function getUsers() {
-  const response = await axios.get(
-      '/userAccList'
-  );
+async function getUsers({account}) {
+  const response = await axios.get(`/AccountInfoAccountTransferListDetail/${account}`);
   return response.data;
 }
 
 
 
-const fields = ['이름','주민번호', '계좌', '계좌상태', '계좌종류' , '잔액' ,]
+const fields = ['날짜','시간', '입출금액', '내용', '잔액', '받는사람' , '보낸사람' , ]
 
-const AccList = () => {
+const AccountTransferListDetail = ({match}) => {
 
  
   const { data: accData2, error, isLoading, reload } = useAsync({
-    promiseFn: getUsers
+    promiseFn: getUsers ,account : match.params.account
   });
   const history = useHistory()
 
@@ -67,13 +55,10 @@ const AccList = () => {
               striped
               bordered
               size="sm"
-              itemsPerPage={7}
-              pagination
-              clickableRows
               columnFilter
               tableFilter
-              /*onRowClick={(item) => history.push(`/users/${item.이름}`)}*/
-               onRowClick={(item) => history.push(`/AccountInfo/AccInfo/${item.계좌}`)}
+              itemsPerPage={15}
+              pagination
             />
 
           
@@ -84,4 +69,4 @@ const AccList = () => {
     </>
   )
 }
-export default AccList
+export default AccountTransferListDetail

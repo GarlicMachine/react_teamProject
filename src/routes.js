@@ -38,10 +38,12 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 const DeposirProductList = React.lazy(() => import('./views/AdminDepositProduct/DeposirProductList/DepositProductList'));
+
 const AccList = React.lazy(() => import('./views/AccountInfo/AccList/AccList'));
-const ACCPWchange = React.lazy(() => import('./views/AccountInfo/ACCPWchange/ACCPWchange'));
 const AccountTransferList = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferList'));
+const AccountTransferListDetail = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferListDetail'));
 const AccInfo = React.lazy(() => import('./views/AccountInfo/AccList/AccInfo'));
+
 const FundList = React.lazy(() => import('./views/Fund/FundList/FundList'));
 const FundListDetail = React.lazy(() => import('./views/Fund/FundList/FundListDetail'));
 const Chatbot = React.lazy(() => import('./views/ServiceCenter/Chatbot/Chatbot'));
@@ -98,11 +100,15 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/AdminDepositProduct/DeposirProductList', name: 'DeposirProductList', component: DeposirProductList },
+
   { path: '/AccountInfo/AccList', name: 'AccList', component: AccList },
-  { path: '/AccountInfo/ACCPWchange', exact: true,  name: 'ACCPWchange', component: ACCPWchange },
-  { path: '/AccountInfo/AccountTransferList', exact: true, name: 'AccountTransferList', component: AccountTransferList },
   { path: '/AccountInfo/AccInfo', exact: true, name: 'AccInfo', component: AccInfo },
-  { path: '/AccountInfo/AccInfo/:id', exact: true, name: 'AccInfo', component: AccInfo },
+  { path: '/AccountInfo/AccInfo/:account', exact: true, name: 'AccInfo', component: AccInfo },
+  { path: '/AccountInfo/AccInfo/:account/:update', exact: true, name: 'AccInfo', component: AccInfo },
+  { path: '/AccountInfo/AccPwUpdate', exact: true, name: 'AccInfo', component: AccInfo },
+  { path: '/AccountInfo/AccountTransferList', exact: true, name: 'AccountTransferList', component: AccountTransferList },
+  { path: '/AccountInfo/AccountTransferListDetail/:account', exact: true, name: 'AccountTransferListDetail', component: AccountTransferListDetail },
+
   { path: '/Fund/FundList', name: 'FundList', component: FundList },
   { path: '/Fund/FundListDetail/:F_NUM', name: 'FundList Details', component: FundListDetail },
   { path: '/ServiceCenter/Chatbot', name: 'Chatbot', component: Chatbot },

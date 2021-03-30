@@ -59,12 +59,7 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: '계좌해지,휴면',
-    to: '/AccountInfo/ACCPWchange',
-  },
-  {
-    _tag: 'CSidebarNavItem',
-    name: '회원별 계좌이체',
+    name: '회원별 입출금목록',
     to: '/AccountInfo/AccountTransferList',
   },
 
