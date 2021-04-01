@@ -1072,6 +1072,253 @@ router.post('/Fund/FundFailAction', function(request, response){
         });
     }
 });
+
+//-------------------------------
+// 김소림
+// 예금 데이터조회
+app.get('/DepositProductList', function(request, response){
+    console.log('---test_ select---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'SELECT Y_NAME 상품명, Y_SUMMARY 상품요약, Y_INTEREST_RATE 금리, Y_TYPE 종류, Y_MIN_DATE 최소기간, Y_MAX_DATE 최대기간, Y_DATE 등록일  FROM deposit_product';
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+//-------------------------------
+// 김소림
+// 예금상품수정
+app.get('/DepositProductModify/:Y_NAME', function(request, response){
+    console.log('---test2_ select---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'SELECT Y_NAME 상품명, Y_SUMMARY 상품요약, Y_INTEREST_RATE 금리, Y_TYPE 종류, Y_MIN_DATE 최소기간, Y_MAX_DATE 최대기간, Y_MIN_PRICE 최소예치금액, Y_EXPLANATION 예금설명, Y_NOTICE 유의사항 FROM deposit_product WHERE Y_NAME=:Y_NAME';
+                    console.log('테스틍!',request.param("Y_NAME"));
+                    console.log('테스틍!');
+                    
+        var binddata = [
+            request.param("Y_NAME"),
+            
+        ]
+        connection.execute(query,binddata, {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+// 디비 연결해제
+
+// --------------------------------------------
+// 예금상품수정Action
+router.post('/AdminDepositProduct/DepositProductModify/DepositProductModifyAction:Y_NAME', function(request, response){
+    console.log('---예금 상품 수정---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'UPDATE deposit_product SET Y_NAME=:Y_NAME,Y_SUMMARY=:Y_SUMMARY, Y_INTEREST_RATE=:Y_INTEREST_RATE, Y_TYPE=:Y_TYPE, Y_MIN_DATE=:Y_MIN_DATE, Y_MAX_DATE=:Y_MAX_DATE, Y_MIN_PRICE=:Y_MIN_PRICE, Y_EXPLANATION=:Y_EXPLANATION, Y_NOTICE=:Y_NOTICE WHERE Y_NAME=:Y_NAME'
+        // PrepareStatement
+        var binddata = [
+            request.body.Y_NAME,
+            request.body.Y_SUMMARY,
+            request.body.Y_INTEREST_RATE,
+            request.body.Y_TYPE,
+            request.body.Y_MIN_DATE,
+            request.body.Y_MAX_DATE,
+            request.body.Y_MIN_PRICE,
+            request.body.Y_EXPLANATION,
+            request.body.Y_NOTICE,
+        ]
+        console.log(request.body.Y_NAME)
+        connection.execute(query, binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log('Row Update : ' + result.rowsAffected);   // 데이터
+            doRelease(connection, result.rowsAffected); // connection 해제
+            response.redirect('#/AdminDepositProduct/DepositProductList');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log(rowList);
+        });
+    }
+});
+// --------------------------------------------
+// 예금상품삭제
+router.post('/AdminDepositProduct/DepositProductList/:Y_NAME', function(request, response){
+    console.log('---예금 상품 삭제---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'DELETE deposit_product WHERE Y_NAME=:Y_NAME'
+        // PrepareStatement
+        var binddata = [
+            request.body.Y_NAME,
+            ]
+        console.log(request.body.Y_NAME)
+        connection.execute(query, binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log('Row Update : ' + result.rowsAffected);   // 데이터
+            doRelease(connection, result.rowsAffected); // connection 해제
+            response.redirect('#/AdminDepositProduct/DepositProductList/1');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log(rowList);
+        });
+    }
+});
+// 디비 연결해제
+// --------------------------------------------
+// --------------------------------------------
+// 예금상품등록
+router.post('/AdminDepositProduct/DepositProductAdd', function(request, response){
+    console.log('---예금 상품 등록---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'INSERT INTO deposit_product(Y_NAME, Y_SUMMARY, Y_INTEREST_RATE, Y_TYPE, Y_MIN_DATE, Y_MAX_DATE, Y_MIN_PRICE, Y_EXPLANATION, Y_NOTICE)';
+        query += ' VALUES(:Y_NAME, :Y_SUMMARY, :Y_INTEREST_RATE, :Y_TYPE, :Y_MIN_DATE, :Y_MAX_DATE, :Y_MIN_PRICE, :Y_EXPLANATION, :Y_NOTICE)';
+        // PrepareStatement
+        var binddata = [
+            request.body.Y_NAME,
+            request.body.Y_SUMMARY,
+            request.body.Y_INTEREST_RATE,
+            request.body.Y_TYPE,
+            request.body.Y_MIN_DATE,
+            request.body.Y_MAX_DATE,
+            request.body.Y_MIN_PRICE,
+            request.body.Y_EXPLANATION,
+            request.body.Y_NOTICE,
+        ]
+        console.log(request.body.Y_NAME)
+        connection.execute(query, binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log('Row Update : ' + result.rowsAffected);   // 데이터
+            doRelease(connection, result.rowsAffected); // connection 해제
+            response.redirect('#/AdminDepositProduct/DepositProductList');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log(rowList);
+        });
+    }
+});
+// 디비 연결해제
+// --------------------------------------------
+
+
 // 라우터 객체를 app 객체에 등록
 app.use('/', router);
 

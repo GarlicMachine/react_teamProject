@@ -104,23 +104,14 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: '예금조회',
-        to: '/AdminDepositProduct/DeposirProductList',
+        to: '/AdminDepositProduct/DepositProductList',
       },
       {
         _tag: 'CSidebarNavItem',
         name: '예금등록',
-        to: '/test/test',
+        to: '/AdminDepositProduct/DepositProductAdd',
       },
-      {
-        _tag: 'CSidebarNavItem',
-        name: '예금수정',
-        to: '/test/test',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: '예금삭제',
-        to: '/test/test',
-      },
+     
     ],
   },
  ],

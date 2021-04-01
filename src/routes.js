@@ -37,7 +37,6 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
-const DeposirProductList = React.lazy(() => import('./views/AdminDepositProduct/DeposirProductList/DepositProductList'));
 const AccList = React.lazy(() => import('./views/AccountInfo/AccList/AccList'));
 const ACCPWchange = React.lazy(() => import('./views/AccountInfo/ACCPWchange/ACCPWchange'));
 const AccountTransferList = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferList'));
@@ -56,6 +55,9 @@ const CounselingDetail = React.lazy(() => import('./views/ServiceCenter/Counseli
 const CounselingModify = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingModify'));
 const MemberInfo = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberInfo'));
 const MemberDetail = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberDetail'));
+const DepositProductList = React.lazy(() => import('./views/AdminDepositProduct/DepositProductList/DepositProductList'));
+const DepositProductModify = React.lazy(() => import('./views/AdminDepositProduct/DepositProductModify/DepositProductModify'));
+const DepositProductAdd = React.lazy(() => import('./views/AdminDepositProduct/DepositProductAdd/DepositProductAdd'));
 
 
 const routes = [
@@ -99,7 +101,6 @@ const routes = [
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/AdminDepositProduct/DeposirProductList', name: 'DeposirProductList', component: DeposirProductList },
   { path: '/AccountInfo/AccList', name: 'AccList', component: AccList },
   { path: '/AccountInfo/ACCPWchange', exact: true,  name: 'ACCPWchange', component: ACCPWchange },
   { path: '/AccountInfo/AccountTransferList', exact: true, name: 'AccountTransferList', component: AccountTransferList },
@@ -119,6 +120,10 @@ const routes = [
   { path: '/ServiceCenter/CounselingModify/:B_NUM', exact: true,  name: 'CounselingModify', component: CounselingModify },
   { path: '/memberUpdate/MemberInfo', exact: true, name: 'MemberInfo', component: MemberInfo },
   { path: '/MemberDetail/:id', exact: true, name: 'MemberDetail', component: MemberDetail },
-];
+  { path: '/AdminDepositProduct/DepositProductList', exact: true, name: 'DepositProductList', component: DepositProductList },
+  { path: '/AdminDepositProduct/DepositProductModify', exact: true, name: 'DepositProductModify', component: DepositProductModify },
+  { path: '/AdminDepositProduct/DepositProductModify/:Y_NAME', exact: true, name: 'DepositProductModify', component: DepositProductModify },
+  { path: '/AdminDepositProduct/DepositProductAdd', exact: true, name: 'DepositProductAdd', component: DepositProductAdd },
+ ];
 
 export default routes;
