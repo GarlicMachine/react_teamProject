@@ -138,23 +138,18 @@ const _nav =  [
   _children: [
     {
       _tag: 'CSidebarNavItem',
-      name: '적금조회',
-      to: '/notifications/alerts',
+      name: '적금승인',
+      to: '/savings/SavingsApproveList',
     },
     {
       _tag: 'CSidebarNavItem',
       name: '적금등록',
-      to: '/notifications/badges',
+      to: '/savings/SavingsRegistration',
     },
     {
       _tag: 'CSidebarNavItem',
-      name: '적금수정',
-      to: '/notifications/modals',
-    },
-    {
-      _tag: 'CSidebarNavItem',
-      name: '적금삭제',
-      to: '/notifications/toaster',
+      name: '적금상품조회',
+      to: '/savings/SavingsProductList',
     },
   ],
 },

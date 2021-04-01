@@ -1072,6 +1072,369 @@ router.post('/Fund/FundFailAction', function(request, response){
         });
     }
 });
+
+//--------------------------------------------------------------------------------------------------------------
+app.get('/savings/SavingsApproveList', function(request, response){
+    console.log('/savings/SavingsApproveList');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "select j.j_name 상품이름, j.j_join_date 적금가입날짜, j.account 계좌번호, j.j_rate 적금금리," 
+        + "j.j_method 적금방법, j.j_end_date 적금만기일, a.accountState 계좌상태 from account_info a "
+        + "JOIN installment_savings j ON a.account = j.account WHERE accountState = '대기' ";
+        
+        connection.execute(query,[], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+router.post('/savings/SavingsApproveList/:update', function(request, response){
+    console.log('/savings/SavingsApproveList/:updates');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'update account_info set ACCOUNTSTATE = :ACCOUNTSTATE where ACCOUNT = :ACCOUNT';
+        
+        var binddata = [
+            request.body.ACCOUNTSTATE,
+            request.body.ACCOUNT
+        ]
+        
+        connection.execute(query,binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('#/savings/SavingsApproveList/1');
+        });
+    });
+    
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList);
+            console.log(rowList);
+        });
+    }
+});
+
+
+router.post('/savings/SavingsRegistration', function(request, response){
+    console.log('/savings/SavingsRegistration');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+
+        let query = "INSERT INTO savings_product VALUES(:J_NAME, :J_SUMMARY, sysdate, :J_INTEREST_RATE, " +
+            " :J_TYPE, :J_MAX_DATE, :J_MIN_DATE, :J_EXPLANATION, :J_NOTICE,  :J_AUTO_DATE)";
+
+            console.log(request.body.J_NAME);
+            console.log(request.body.J_SUMMARY);
+            console.log(request.body.J_INTEREST_RATE);
+            console.log(request.body.J_TYPE);
+            console.log(request.body.J_MAX_DATE);
+            console.log(request.body.J_MIN_DATE);
+            console.log(request.body.J_EXPLANATION);
+            console.log(request.body.J_NOTICE);
+            console.log(request.body.J_AUTO_DATE);
+        
+        var binddata = [
+            request.body.J_NAME,
+            request.body.J_SUMMARY,
+            request.body.J_INTEREST_RATE,
+            request.body.J_TYPE,
+            request.body.J_MAX_DATE,
+            request.body.J_MIN_DATE,
+            request.body.J_EXPLANATION,
+            request.body.J_NOTICE,
+            request.body.J_AUTO_DATE
+        ]
+        
+        connection.execute(query,binddata, function(err, result){
+            console.error(query);
+            console.error(binddata);
+
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('#/savings/SavingsApproveList');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+app.get('/savings/SavingsProductList', function(request, response){
+    console.log('/savings/SavingsProductList');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "select j_name 상품명, j_summary 상품요약, j_date 등록일, j_interest_rate 금리, j_type 종류 , j_max_date 최대기간, j_min_date 최소기간 from savings_product";
+        
+        connection.execute(query,[], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+app.get('/savings/SavingsModify/:J_NAME', function(request, response){
+    console.log('/savings/SavingsModify/:J_NAME');
+    console.log(request.params.J_NAME);
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "select j_name 상품명, j_summary 상품요약, j_interest_rate 금리, j_type 종류 , j_max_date 최대기간, j_min_date 최소기간, j_explanation 적금설명, j_notice 유의사항, j_auto_date 자동이체날 from savings_product WHERE J_NAME = :J_NAME";
+        
+        var binddata = [
+            request.params.J_NAME,
+        ]
+
+        connection.execute(query,binddata, {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+router.post('/savings/SavingsModifyAction', function(request, response){
+    console.log('/savings/SavingsModifyAction');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+
+        let query = "UPDATE savings_product SET J_SUMMARY =:J_SUMMARY,  J_INTEREST_RATE =:J_INTEREST_RATE, " +
+            " J_TYPE =:J_TYPE, J_MAX_DATE =:J_MAX_DATE, J_MIN_DATE =:J_MIN_DATE, J_EXPLANATION =:J_EXPLANATION, J_NOTICE =:J_NOTICE WHERE J_NAME =: J_NAME ";
+
+            
+            console.log(request.body.J_SUMMARY);
+            console.log(request.body.J_INTEREST_RATE);
+            console.log(request.body.J_TYPE);
+            console.log(request.body.J_MAX_DATE);
+            console.log(request.body.J_MIN_DATE);
+            console.log(request.body.J_EXPLANATION);
+            console.log(request.body.J_NOTICE);
+            console.log(request.body.J_NAME);
+
+        var binddata = [
+            request.body.J_SUMMARY,
+            request.body.J_INTEREST_RATE,
+            request.body.J_TYPE,
+            request.body.J_MAX_DATE,
+            request.body.J_MIN_DATE,
+            request.body.J_EXPLANATION,
+            request.body.J_NOTICE,
+            request.body.J_NAME
+        ]
+        
+        connection.execute(query,binddata, function(err, result){
+            console.error(query);
+            console.error(binddata);
+
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('#/savings/SavingsProductList/2');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+router.post('/savings/SavingsProductList/:J_NAME', function(request, response){
+    console.log('/savings/SavingsProductList/:J_NAME');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+
+        let query = "DELETE savings_product WHERE J_NAME =: J_NAME";
+
+        var binddata = [
+            request.body.J_NAME,
+        ]
+        
+        connection.execute(query,binddata, function(err, result){
+            console.error(query);
+            console.error(binddata);
+
+
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('#/savings/SavingsProductList/1');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+
+//========================================================
+
+
+
 // 라우터 객체를 app 객체에 등록
 app.use('/', router);
 

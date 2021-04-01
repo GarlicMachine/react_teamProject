@@ -56,6 +56,10 @@ const CounselingDetail = React.lazy(() => import('./views/ServiceCenter/Counseli
 const CounselingModify = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingModify'));
 const MemberInfo = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberInfo'));
 const MemberDetail = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberDetail'));
+const SavingsRegistration = React.lazy(() => import('./views/savings/SavingsRegistration'));
+const SavingsModify = React.lazy(() => import('./views/savings/SavingsModify'));
+const SavingsApproveList = React.lazy(() => import('./views/savings/SavingsApproveList'));
+const SavingsProductList = React.lazy(() => import('./views/savings/SavingsProductList'));
 
 
 const routes = [
@@ -119,6 +123,15 @@ const routes = [
   { path: '/ServiceCenter/CounselingModify/:B_NUM', exact: true,  name: 'CounselingModify', component: CounselingModify },
   { path: '/memberUpdate/MemberInfo', exact: true, name: 'MemberInfo', component: MemberInfo },
   { path: '/MemberDetail/:id', exact: true, name: 'MemberDetail', component: MemberDetail },
+  { path: '/savings/SavingsRegistration', exact: true, name: 'SavingsRegistration', component: SavingsRegistration },
+
+  { path: '/savings/SavingsModify/:J_NAME', exact: true, name: 'SavingsModify', component: SavingsModify },
+  { path: '/savings/SavingsModifyAction', exact: true, name: 'SavingsModifyAction', component: SavingsModify },
+  { path: '/savings/SavingsApproveList', exact: true, name: 'SavingsApproveList', component: SavingsApproveList },
+  { path: '/savings/SavingsApproveList/:update', exact: true, name: 'SavingsApproveListUpdate', component: SavingsApproveList },
+  { path: '/savings/SavingsProductList', exact: true, name: 'SavingsProductList', component: SavingsProductList },
+  { path: '/savings/SavingsProductList/:J_NAME', exact: true, name: 'SavingsDelete', component: SavingsProductList }
+
 ];
 
 export default routes;
