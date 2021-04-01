@@ -67,6 +67,11 @@ const _nav =  [
     name: '회원별 계좌이체',
     to: '/AccountInfo/AccountTransferList',
   },
+  {
+    _tag: 'CSidebarNavItem',
+    name: '회원 한도 신청',
+    to: '/AccountInfo/AccountLimitList',
+  },
 
     ],
    },

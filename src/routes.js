@@ -56,6 +56,7 @@ const CounselingDetail = React.lazy(() => import('./views/ServiceCenter/Counseli
 const CounselingModify = React.lazy(() => import('./views/ServiceCenter/Counseling/CounselingModify'));
 const MemberInfo = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberInfo'));
 const MemberDetail = React.lazy(() => import('./views/MemberInfo/memberUpdate/MemberDetail'));
+const AccountLimitList = React.lazy(() => import('./views/AccountInfo/AccountLimit/AccountLimitList'));
 
 
 const routes = [
@@ -119,6 +120,8 @@ const routes = [
   { path: '/ServiceCenter/CounselingModify/:B_NUM', exact: true,  name: 'CounselingModify', component: CounselingModify },
   { path: '/memberUpdate/MemberInfo', exact: true, name: 'MemberInfo', component: MemberInfo },
   { path: '/MemberDetail/:id', exact: true, name: 'MemberDetail', component: MemberDetail },
+  { path: '/AccountInfo/AccountLimitList', exact: true, name: 'AccountLimitList', component: AccountLimitList },
+  
 ];
 
 export default routes;

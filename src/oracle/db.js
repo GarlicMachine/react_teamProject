@@ -111,6 +111,102 @@ app.get('/useAcc/:account', function(request, response){
 });
 // 디비 연결해제
 
+//김세엽
+//화원 한도신청 리스트
+app.get('/AccountLimitList/info', function(request, response){
+    console.log('---한도 신청리스트---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "SELECT m.name as 이름, i.account as 계좌번호, i.Balance as 잔액, l.l_money as 신청금액,l.l_date as 신청날짜 ,l.l_key as 키 "+
+                      "FROM members m "+
+                      "JOIN ACCOUNT_INFO i ON m.id = i.id "+
+                      "JOIN LIMIT_INFO l ON i.account = l.account "+
+                      "WHERE l_state='대기' ";
+        
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+
+//김세엽
+//한도변경 승인 취소
+router.post('/AccountLimitList/update/', function(request, response){
+    console.log('---한도변경 승인 취소---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+
+        let query = " UPDATE LIMIT_INFO set l_state=:l_state WHERE l_key=:l_key ";
+        
+        console.log(request.body.l_state);
+        console.log(request.body.l_key);
+
+        var binddata = [
+            request.body.l_state,
+            request.body.l_key,
+        ]
+        connection.execute(query,binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('#/AccountInfo/AccountLimitList');
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
 
 //김세엽
 //회원정보리스트

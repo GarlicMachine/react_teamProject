@@ -42,6 +42,7 @@ const MemberDetail = ({match}) => {
     if (isLoading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다</div>;
     if (!accData2) return <button onClick={reload}>불러오기</button>;
+    
   return (
     <>
       <CRow>
