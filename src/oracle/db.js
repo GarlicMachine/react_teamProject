@@ -1214,7 +1214,7 @@ router.post('/savings/SavingsRegistration', function(request, response){
             }
             console.log(result.rows);   // 데이터
             doRelease(connection, result.rows); // connection 해제
-            response.redirect('#/savings/SavingsApproveList');
+            response.redirect('#/savings/SavingsProductList');
         });
     });
     // 디비 연결 해제

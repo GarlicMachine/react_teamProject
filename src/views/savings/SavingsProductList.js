@@ -37,8 +37,7 @@ const fields = [
   {key : '최소기간'},
   {key : '최대기간'},
   {key : '등록일'},
-  {key : '수정', label: ''},
-  {key : '삭제', label: ''}
+  {key : '수정', label: ''}
 ]
 async function getUsers() {
   const response = await axios.get(
@@ -106,18 +105,14 @@ const SavingsProductList = ({match}) => {
                 '수정':
                   (item)=>(
                     <td style={{textAlign:'center'}}>
-                      <CButton type="submit" size="sm" color="warning" onClick={() => history.push(`/savings/SavingsModify/${item.상품명}`)}>수정</CButton>
-                    </td>
-                  ),
-                '삭제':
-                (item)=>(
-                  <td style={{textAlign:'center'}}>
-                      <CForm action="/savings/SavingsProductList/1" method="post">
+                      <CButton type="submit" size="sm" color="warning"  style={{float:"left"}} onClick={() => history.push(`/savings/SavingsModify/${item.상품명}`)}>수정</CButton>
+                      <span style={{float:"left"}}>　</span>
+                      <CForm action="/savings/SavingsProductList/1" method="post" style={{float:"left"}}>
                          <input type="hidden" name="J_NAME" value={item.상품명}></input>
                         <CButton type="submit" size="sm" color="danger">삭제</CButton>
                       </CForm>
-                  </td>
-                )
+                    </td>
+                  ),
               }}
               >
             </CDataTable>

@@ -37,7 +37,7 @@ const TheHeader = () => {
     const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
     dispatch({type: 'set', sidebarShow: val})
   }
-
+  /* 이부분    */
   const logoutClick=()=>{
     document.location.href = "http://localhost/teamProject/Adminlogout.cc"
   }
@@ -61,10 +61,7 @@ const TheHeader = () => {
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
-        {/* <TheHeaderDropdownNotif/>
-        <TheHeaderDropdownTasks/>
-        <TheHeaderDropdownMssg/>
-        <TheHeaderDropdown/> */}
+        {/*로그아웃 스프링  */}
         <CButton onClick={logoutClick}>Logout</CButton>
       </CHeaderNav>
 

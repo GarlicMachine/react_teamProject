@@ -34,17 +34,6 @@ const _nav =  [
         name: '정보수정',
         to: '/memberUpdate/MemberInfo',
       },
-      {
-        _tag: 'CSidebarNavItem',
-        name: '보유계좌 리스트',
-        to: '/base/cards',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: '등록상품 리스트',
-        to: '/base/carousels',
-      },
-     
   ],
   },
   {
