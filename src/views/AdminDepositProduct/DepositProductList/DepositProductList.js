@@ -28,7 +28,7 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-
+//변경
 const fields = [
   {key : '상품명'},
   {key : '상품요약'},
@@ -40,6 +40,7 @@ const fields = [
   {key : '수정', label: ''},
   {key : '삭제', label: ''}
 ]
+//추가
 async function getUsers() {
   const response = await axios.get(
       '/DepositProductList'
@@ -49,7 +50,8 @@ async function getUsers() {
 }
 
 const DepositProductList = ({match}) => {
-    const { data: deposit, error, isLoading, reload } = useAsync({
+  //추가   
+  const { data: deposit, error, isLoading, reload } = useAsync({
       promiseFn: getUsers
     });
     
@@ -81,6 +83,8 @@ const DepositProductList = ({match}) => {
             </CCardHeader>
             <CCardBody>
             <CDataTable
+
+            /* 추가 */
               items={deposit}
               fields={fields}
               itemsPerPage={5}
