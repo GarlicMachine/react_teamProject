@@ -92,7 +92,7 @@ const SavingsProductList = ({match}) => {
                   ),
                 '등록일':
                 (item)=>(
-                  <td>{new Intl.DateTimeFormat('kor', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(timestamp)}</td>
+                  <td>{item.등록일}</td>
                 ),
                 '최소기간':
                 (item)=>(
