@@ -23,9 +23,9 @@ var router = express.Router();
 oracledb.autoCommit = true;
 
 //-------------------------------
-// 데이터 조회
+// 회원 계좌정보 조회 (정하늘)
 app.get('/userAccList', function(request, response){
-    console.log('---test_ select---');
+    console.log('---회원 계좌정보 조회---');
     oracledb.getConnection({
         user : dbConfig.user,
         password : dbConfig.password,
@@ -64,8 +64,10 @@ app.get('/userAccList', function(request, response){
     }
 });
 
+
+//계좌정보 상세조회 (정하늘)
 app.get('/useAcc/:account', function(request, response){
-    console.log('---test2_ select---');
+    console.log('---계좌정보 상세조회---');
     oracledb.getConnection({
         user : dbConfig.user,
         password : dbConfig.password,
@@ -78,15 +80,18 @@ app.get('/useAcc/:account', function(request, response){
             return;
         }
         console.log('접속 성공');
-        let query = 'SELECT m.name 이름, m.jumin 주민번호, a.account 계좌, a.accountstate 계좌상태, a.accounttype 계좌종류, a.balance 잔액 '+
-                    'FROM Members m JOIN account_info a ON m.id = a.id WHERE a.account = :account';
-                    console.log('테스틍!',request.account);
-                    console.log('테스틍!',request.body.account);
-                    console.log('테스틍!');
+        let query = "SELECT m.id, m.name, m.jumin, m.phone, a.account, a.Balance, a.accountType, a.accountState, a.acc_state_content, a.accountLimit,  to_char(a.delete_Date,'YYYY-MM-DD HH24:MI:SS') DELETE_DATE, to_char(a.sleep_Date,'YYYY-MM-DD HH24:MI:SS') SLEEP_DATE, to_char(a.new_Date,'YYYY-MM-DD HH24:MI:SS') NEW_DATE "+
+        'FROM Members m '+ 
+        'JOIN account_info a ' +
+        'ON m.id = a.id ' +
+        'WHERE a.account = :account';
+
                     
+            console.error(request.param("account"));
         var binddata = [
-            request.params.account,
+            request.param("account"),
         ]
+
         connection.execute(query,binddata, {outFormat:oracledb.OBJECT}, function(err, result){
             if(err){
                 console.error(err.message);
@@ -1907,6 +1912,7 @@ router.post('/LoansProduct/LoansProductList/LoansProductModifyAction', function(
             response.redirect('#/LoansProduct/LoansProductList');
         });
     });
+    
     // 디비 연결 해제
     function doRelease(connection, rowList){
         connection.release(function(err, rows){
@@ -1914,6 +1920,203 @@ router.post('/LoansProduct/LoansProductList/LoansProductModifyAction', function(
                 console.error(err.message);
             }
             // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+//계좌정보 비밀번호 업데이트 (정하늘)
+router.post('/AccountInfoAccPwUpdate', function(request, response){
+    console.log('---계좌정보 비밀번호 업데이트---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "UPDATE account_info "+
+        "SET accountPW =:pwChange "+
+      "WHERE account=:account ";
+
+      console.error(request.body.account);
+      console.error(request.body.pwChange);
+        var binddata = [
+        request.body.pwChange,
+        request.body.account,
+        ]
+
+        connection.execute(query,binddata,  function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('/#/AccountInfo/AccInfo/'+request.body.account);
+        });
+    });
+    
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
+            console.log(rowList);
+        });
+    }
+});
+
+
+// 디비 연결해제
+
+//계좌정보 상태 업데이트 (정하늘)
+router.post('/AccountInfoAccstateUpdate', function(request, response){
+    console.log('---계좌정보 상태 업데이트---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "UPDATE account_info " +
+                    "   SET accountState =:state " +
+                    "     , acc_state_content =:ACC_STATE_CONTENT " +
+                    " WHERE account =:account ";
+                    
+
+                     console.error(request.body.account);
+        var binddata = [
+            request.body.state,
+            request.body.ACC_STATE_CONTENT,
+            request.body.account
+        ]
+
+        connection.execute(query,binddata,  function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.redirect('/#/AccountInfo/AccInfo/'+request.body.account+'/'+result.rowsAffected);
+        });
+    });
+
+    
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+        });
+    }
+});
+// 디비 연결해제
+
+
+//계좌거래내역 상세조회 (정하늘)
+app.get('/AccountInfoAccountTransferListDetail/:account', function(request, response){
+    console.log('---계좌거래내역 상세조회---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "SELECT day 날짜 "+
+        "                   , time 시간 "+
+        "                   , money 입출금액 "+
+        "                   , balance "+
+        "                   , in_comment 받는사람 "+
+        "                   , out_comment 보낸사람 "+
+        "                   , in_out 내용 "+
+        "                   , in_outdate "+
+        "                   , balance-summoney 잔액 "+
+        "           FROM(SELECT day "+
+        "                       , time "+
+        "                       , money "+
+        "                       , balance "+
+        "                       , in_comment "+
+        "                       , out_comment "+
+        "                       , in_out "+
+        "                       , in_outdate  "+
+        "                       , SUM(money) OVER(ORDER BY in_outdate DESC) as summoney "+
+        "               FROM  (select TO_CHAR(t.in_outdate,'YY-MM-DD') as day "+
+        "                           , TO_CHAR(t.in_outdate,'HH24:MI:SS') as time "+
+        "                           , t.money,i.balance,t.in_comment "+
+        "                           , t.out_comment "+
+        "                           , t.in_out "+
+        "                           , t.in_outdate "+
+        "                       FROM account_info i "+
+        "                           LEFT JOIN account_transfer t "+
+        "                           ON i.account=t.account "+
+        "                       WHERE i.account='77777-777-777' "+
+        "                       AND t.in_out='입금' "+
+        "                       UNION "+
+        "                       select TO_CHAR(t.in_outdate,'YY-MM-DD')as day "+
+        "                           , TO_CHAR(t.in_outdate,'HH24:MI:SS')as time "+
+        "                           , -t.money,i.balance "+
+        "                           , t.in_comment "+
+        "                           , t.out_comment "+
+        "                           , t.in_out  "+
+        "                           , t.in_outdate "+
+        "                       FROM account_info i "+
+        "                           LEFT JOIN account_transfer t "+
+        "                           ON i.account=t.account "+
+        "                       WHERE i.account=:account "+
+        "                       AND t.in_out='출금')) "
+        "                       ORDER BY day DESC "
+        "                              , time DESC;";
+                        console.log(request.param("account"));
+                        
+        var binddata = [
+            request.param("account"),
+        ]
+
+        connection.execute(query,binddata, {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log('list size:' + rowList.length);
             console.log(rowList);
         });
     }
@@ -1921,6 +2124,7 @@ router.post('/LoansProduct/LoansProductList/LoansProductModifyAction', function(
 // 디비 연결해제
 // 박서하
 // --------------------------------------------
+
 
 // --------------------------------------------
 // 박서하
