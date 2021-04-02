@@ -38,13 +38,12 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
-const DeposirProductList = React.lazy(() => import('./views/AdminDepositProduct/DeposirProductList/DepositProductList'));
 
+//const DeposirProductList = React.lazy(() => import('./views/AdminDepositProduct/DeposirProductList/DepositProductList'));
 const AccList = React.lazy(() => import('./views/AccountInfo/AccList/AccList'));
 const AccountTransferList = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferList'));
 const AccountTransferListDetail = React.lazy(() => import('./views/AccountInfo/AccountTransferList/AccountTransferListDetail'));
 const AccInfo = React.lazy(() => import('./views/AccountInfo/AccList/AccInfo'));
-
 const FundList = React.lazy(() => import('./views/Fund/FundList/FundList'));
 const FundListDetail = React.lazy(() => import('./views/Fund/FundList/FundListDetail'));
 const Chatbot = React.lazy(() => import('./views/ServiceCenter/Chatbot/Chatbot'));
@@ -72,6 +71,10 @@ const LoansProductList = React.lazy(() => import('./views/LoansProduct/LoansProd
 const LoansProductDetail = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductDetail'));
 const LoansProductModify = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductModify'));
 const LoansProductInsert = React.lazy(() => import('./views/LoansProduct/LoansProductList/LoansProductInsert'));
+
+const DepositProductList = React.lazy(() => import('./views/AdminDepositProduct/DepositProductList/DepositProductList'));
+const DepositProductModify = React.lazy(() => import('./views/AdminDepositProduct/DepositProductModify/DepositProductModify'));
+const DepositProductAdd = React.lazy(() => import('./views/AdminDepositProduct/DepositProductAdd/DepositProductAdd'));
 
 
 const routes = [
@@ -115,7 +118,7 @@ const routes = [
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/AdminDepositProduct/DeposirProductList', name: 'DeposirProductList', component: DeposirProductList },
+ // { path: '/AdminDepositProduct/DeposirProductList', name: 'DeposirProductList', component: DeposirProductList },
 
   { path: '/AccountInfo/AccList', name: 'AccList', component: AccList },
   { path: '/AccountInfo/AccInfo', exact: true, name: 'AccInfo', component: AccInfo },
@@ -154,7 +157,11 @@ const routes = [
   { path: '/LoansProduct/LoansProductList', exact: true, name: 'LoansProductList', component: LoansProductList },
   { path: '/LoansProduct/LoansProductList/LoansProductDetail/:D_NAME', export: true, name: 'LoansProductDetail', component: LoansProductDetail },
   { path: '/LoansProduct/LoansProductList/LoansProductModify/:D_NAME', export: true, name: 'LoansProductModify', component : LoansProductModify },
-  { path: '/LoansProduct/LoansProductList/LoansProductInsert', export: true, name: 'LoansProductInsert', component : LoansProductInsert }
-];
+  { path: '/LoansProduct/LoansProductList/LoansProductInsert', export: true, name: 'LoansProductInsert', component : LoansProductInsert },
+  { path: '/AdminDepositProduct/DepositProductList', exact: true, name: 'DepositProductList', component: DepositProductList },
+  { path: '/AdminDepositProduct/DepositProductModify', exact: true, name: 'DepositProductModify', component: DepositProductModify },
+  { path: '/AdminDepositProduct/DepositProductModify/:Y_NAME', exact: true, name: 'DepositProductModify', component: DepositProductModify },
+  { path: '/AdminDepositProduct/DepositProductAdd', exact: true, name: 'DepositProductAdd', component: DepositProductAdd },
+ ];
 
 export default routes;

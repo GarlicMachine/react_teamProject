@@ -29,12 +29,13 @@ const LoansProductList = () => {
 
 	const fields = [
 		{key : '대출명'},
-		{key : '대출등록일'},
+		{key : '상품요약'},
 		{key : '대출금리'},
 		{key : '최소대출금액'},
 		{key : '최대대출금액'},
 		{key : '최소대출기간'},
 		{key : '최대대출기간'},
+		{key : '대출등록일'},
 		{key : '조회'}
 	]
 
@@ -69,6 +70,12 @@ const LoansProductList = () => {
 								activePage={page}
 								clickableRows
 								scopedSlots = {{
+									'상품요약' :
+									(item) => (
+										<td>
+											{item.상품요약.length<7?item.상품요약:"...."}
+										</td>
+									),
 									'대출금리' :
 									(item) => (
 										<td>

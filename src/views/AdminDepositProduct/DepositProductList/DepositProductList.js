@@ -28,7 +28,7 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-
+//변경
 const fields = [
   {key : '상품명'},
   {key : '상품요약'},
@@ -39,25 +39,27 @@ const fields = [
   {key : '등록일'},
   {key : '수정', label: ''}
 ]
+//추가
 async function getUsers() {
   const response = await axios.get(
-      '/savings/SavingsProductList'
+      '/DepositProductList'
   );
   
   return response.data;
 }
 
-const SavingsProductList = ({match}) => {
-    const { data: accData2, error, isLoading, reload } = useAsync({
+const DepositProductList = ({match}) => {
+  //추가   
+  const { data: deposit, error, isLoading, reload } = useAsync({
       promiseFn: getUsers
     });
     
-    if(match.params.J_NAME == 1){
-      alert("판매종료 되었습니다.");
-      match.params.J_NAME=0;
-    }else if(match.params.J_NAME == 2) {
+    if(match.params.Y_NAME == 1){
+      alert("삭제되었습니다.");
+      match.params.Y_NAME=0;
+    }else if(match.params.Y_NAME == 2) {
       alert("수정되었습니다.");
-      match.params.J_NAME=0;
+      match.params.Y_NAME=0;
     }
    
     const history = useHistory()
@@ -65,7 +67,7 @@ const SavingsProductList = ({match}) => {
 
     if (isLoading) return <div>로딩중..</div>;
     if (error) return <div>에러가 발생했습니다</div>;
-    if (!accData2) return <button onClick={reload}>불러오기</button>;
+    if (!deposit) return <button onClick={reload}>불러오기</button>;
 
     const timestamp = Date.now();
     
@@ -80,7 +82,9 @@ const SavingsProductList = ({match}) => {
             </CCardHeader>
             <CCardBody>
             <CDataTable
-              items={accData2}
+
+            /* 추가 */
+              items={deposit}
               fields={fields}
               itemsPerPage={5}
               pagination
@@ -92,7 +96,7 @@ const SavingsProductList = ({match}) => {
                   ),
                 '등록일':
                 (item)=>(
-                  <td>{item.등록일}</td>
+                  <td>{new Intl.DateTimeFormat('kor', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(timestamp)}</td>
                 ),
                 '최소기간':
                 (item)=>(
@@ -105,13 +109,14 @@ const SavingsProductList = ({match}) => {
                 '수정':
                   (item)=>(
                     <td style={{textAlign:'center'}}>
-                      <CButton type="submit" size="sm" color="warning"  style={{float:"left"}} onClick={() => history.push(`/savings/SavingsModify/${item.상품명}`)}>수정</CButton>
+                      <CButton style={{float:"left"}} type="submit" size="sm" color="warning"  onClick={() => history.push(`/AdminDepositProduct/DepositProductModify/${item.상품명}`)}>수정</CButton>
                       <span style={{float:"left"}}>　</span>
-                      {item.상품요약!=="상품판매종료"?  <CForm action="/savings/SavingsProductList/1" method="post" style={{float:"left"}}>
-                         <input type="hidden" name="J_NAME" value={item.상품명}></input>
-                        <CButton type="submit" size="sm" color="danger">종료</CButton>
+                      
+                      {item.상품요약!=="상품판매종료"?<CForm action="/AdminDepositProduct/DepositProductList/1" method="post" style={{float:"left"}}>
+                         <input type="hidden" name="Y_NAME" value={item.상품명}></input>
+                         <CButton type="submit" size="sm" color="danger">종료</CButton>
                       </CForm>:""}
-                     
+                      
                     </td>
                   ),
               }}
@@ -125,4 +130,4 @@ const SavingsProductList = ({match}) => {
   )
 }
 
-export default SavingsProductList
+export default DepositProductList
