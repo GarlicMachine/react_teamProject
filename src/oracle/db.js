@@ -2419,6 +2419,57 @@ router.post('/AdminDepositProduct/DepositProductAdd', function(request, response
         });
     }
 });
+
+
+
+app.get('/FundChart', function(request, response){
+    console.log('---펀드차트---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "SELECT TO_CHAR(b.dt, 'YYYY-MM') AS 날짜 , NVL(TRUNC(SUM(a.sumorder)), 0) 합계 "+
+                      " FROM ( SELECT TO_CHAR(f_date, 'YYYY-MM-DD') AS hiredate , SUM(f_money) sumorder "+
+                      " FROM fund_Investor "+
+                      " WHERE f_date BETWEEN SYSDATE -365  AND SYSDATE "+
+                      " GROUP BY TO_CHAR(f_date, 'YYYY-MM-DD'))  a "+
+                      " RIGHT JOIN ( SELECT  TRUNC(add_months(sysdate,-11),'mm') -1+ LEVEL AS dt "+
+                      " FROM dual  "+
+                      "  CONNECT BY LEVEL <= sysdate - TRUNC(add_months(sysdate,-11),'mm') +1)   b "+
+                      "  ON b.dt = a.hiredate "+
+                      "  GROUP BY TO_CHAR(b.dt, 'YYYY-MM') "+
+                      " ORDER BY TO_CHAR(b.dt, 'YYYY-MM') ";
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+
+            console.log('list size:' + rowList.length);
+        });
+    }
+});
+
 // 디비 연결해제
 
 // 라우터 객체를 app 객체에 등록
