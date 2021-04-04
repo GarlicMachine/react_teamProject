@@ -32,7 +32,7 @@ const CounselingWrite = () => {
                     <CCardBody>
                         
                         <CForm action='/ServiceCenter/CounselingWriteAction' method="POST">
-                            <input type="hidden" id ="ID" name="ID" value="관리자"></input>
+                            <input type="hidden" id ="ID" name="ID" value="test"></input>
                             <CFormGroup row>
                             <CCol md="1">
                                 <CLabel htmlFor="B_DATE">작성일</CLabel>

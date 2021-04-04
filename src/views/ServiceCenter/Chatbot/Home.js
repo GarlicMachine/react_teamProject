@@ -15,7 +15,7 @@ const Home = () => {
     <div className="home-container">
       <input
         type="text"
-        placeholder="USER ID - URL: http://localhost:3000/ServiceCenter/Chatbot/jpro6679(USER ID)"
+        placeholder="User ID"
         value={roomName}
         onChange={handleRoomNameChange}
         className="text-input-field"

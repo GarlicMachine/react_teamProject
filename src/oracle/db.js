@@ -723,7 +723,7 @@ router.post('/ServiceCenter/CounselingWriteAction', function(request, response){
         }
         console.log('접속 성공');
         let query = 'INSERT INTO COUNSELING(B_NUM, B_TITLE, ID, B_DATE, B_CONTENT, B_CATEGORY)';
-        query += ' VALUES(num_seq.nextval, :B_TITLE, :ID, :B_DATE, :B_CONTENT, :B_CATEGORY)';
+        query += ' VALUES(seq_counseling.nextval, :B_TITLE, :ID, :B_DATE, :B_CONTENT, :B_CATEGORY)';
         // PrepareStatement
         var binddata = [
             request.body.B_TITLE,
@@ -751,7 +751,6 @@ router.post('/ServiceCenter/CounselingWriteAction', function(request, response){
                 console.error(err.message);
             }
             // DB 종료까지 모두 완료되었을시 응답 데이터 반환
-            console.log('list size:' + rowList.length);
             console.log(rowList);
         });
     }
