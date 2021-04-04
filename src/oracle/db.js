@@ -1055,7 +1055,7 @@ app.get('/Fund/FundListDetail/:F_NUM', function(request, response){
             console.error(err.message);
             return;
         }
-        let query = 'SELECT F_NUM 펀드번호, ID 작성자, F_TITLE 펀드명, F_CONTENT 펀드내용, (F_START_DATE ||  ' + '\' ~ \'' + ' || F_END_DATE) 펀딩기간, F_TARGET_MONEY 목표금액, F_CATEGORY 펀드종목, F_APPROVE 펀드승인, F_NAME 등록자이름, F_PHONE 등록자연락처, F_EMAIL 등록자이메일, F_ACCOUNT 모금계좌, F_FILENAME 첨부파일 FROM FUND WHERE F_NUM = :F_NUM';
+        let query = 'SELECT F_NUM 펀드번호, ID 작성자, F_TITLE 펀드명, F_CONTENT 펀드내용, (F_START_DATE ||  ' + '\' ~ \'' + ' || F_END_DATE) 펀딩기간, F_TARGET_MONEY 목표금액, F_CATEGORY 펀드종목, F_APPROVE 펀드승인, F_NAME 등록자이름, F_PHONE 등록자연락처, F_EMAIL 등록자이메일, ACCOUNT 모금계좌, F_FILENAME 첨부파일 FROM FUND WHERE F_NUM = :F_NUM';
         var binddata = [
             request.param("F_NUM"),
         ]

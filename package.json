@@ -60,6 +60,7 @@
     "react-scripts": "^4.0.3"
   },
   "scripts": {
+    "db" : "cd src/oracle && nodemon db.js",
     "chat": "node chat-server.js",
     "rpa": "C:/Users/USER/AppData/Local/UiPath/app-20.10.6/UiRobot.exe execute --file D:/teamProject_RPA/Main.xaml",
     "start": "react-scripts start",
