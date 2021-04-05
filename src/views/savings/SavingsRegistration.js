@@ -34,15 +34,9 @@ import {
 import CIcon from '@coreui/icons-react'
 import { DocsLink } from 'src/reusable'
 
-
-const fields = [
-  {key : '상품명'}
-]
-
 const SavingsRegistration = () => {
   const [collapsed, setCollapsed] = React.useState(true)
   const [showElements, setShowElements] = React.useState(true)
-
 
   const onFormSubmit = e => {
     const formData = new FormData(e.target)
@@ -87,7 +81,6 @@ const SavingsRegistration = () => {
                   <CCol sm="2">
                   <CSelect name="J_TYPE">
                       <option value="단리">단리</option>
-                      <option value="복리">복리</option>
                     </CSelect>
                   </CCol>
                 </CFormGroup>

@@ -1726,7 +1726,7 @@ app.get('/DepositProductList', function(request, response){
             return;
         }
         console.log('접속 성공');
-        let query = 'SELECT Y_NAME 상품명, Y_SUMMARY 상품요약, Y_INTEREST_RATE 금리, Y_TYPE 종류, Y_MIN_DATE 최소기간, Y_MAX_DATE 최대기간, Y_DATE 등록일  FROM deposit_product';
+        let query = "SELECT Y_NAME 상품명, Y_SUMMARY 상품요약, Y_INTEREST_RATE 금리, Y_TYPE 종류, Y_MIN_DATE 최소기간, Y_MAX_DATE 최대기간, TO_CHAR(y_date,'yyyy-mm-dd') 등록일 FROM deposit_product";
         connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
             if(err){
                 console.error(err.message);

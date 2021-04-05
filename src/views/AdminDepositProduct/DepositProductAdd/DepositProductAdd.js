@@ -22,6 +22,17 @@ const DepositProductAdd = () => {
   console.log("글쓰기화면")
   const nowTime = moment().format('YYYY-MM-DD');
   console.log(nowTime);
+
+  const onFormSubmit = e => {
+    const formData = new FormData(e.target)
+    const formDataObj = Object.fromEntries(formData.entries())
+
+    if(formDataObj.Y_MIN_DATE > formDataObj.Y_MAX_DATE) {
+      alert("최대예금기간이 최소예금기간 이상이어야 합니다.");
+      e.preventDefault()
+    }
+  };
+
   return (
     <>
       <CRow>
@@ -31,7 +42,7 @@ const DepositProductAdd = () => {
               <h2>예금상품등록</h2>
             </CCardHeader>
             <CCardBody>
-              <CForm action="/AdminDepositProduct/DepositProductAdd" method="post">
+              <CForm action="/AdminDepositProduct/DepositProductAdd" method="post" onSubmit={onFormSubmit}>
                 <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="text-input">예금상품이름</CLabel>
