@@ -1,5 +1,5 @@
 import React from 'react'
-import { CChartLine } from '@coreui/react-chartjs'
+import { CChartLine, CChartRadar } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import { useAsync } from 'react-async';
 import axios from 'axios';
@@ -46,30 +46,30 @@ const MainChartExample = attributes => {
                     fundChart[9].합계,
                     fundChart[10].합계,
                     fundChart[11].합계]
-    const data2 = [fundChart[0].합계*0.92,
-                   fundChart[1].합계*0.92,
-                   fundChart[2].합계*0.92,
-                   fundChart[3].합계*0.92,
-                   fundChart[4].합계*0.92,
-                   fundChart[5].합계*0.92,
-                   fundChart[6].합계*0.92,
-                   fundChart[7].합계*0.92,
-                   fundChart[8].합계*0.92,
-                   fundChart[9].합계*0.92,
-                   fundChart[10].합계*0.92,
-                   fundChart[11].합계*0.92]
-    const data3 = [fundChart[0].합계*0.08,
-                  fundChart[1].합계*0.08,
-                  fundChart[2].합계*0.08,
-                  fundChart[3].합계*0.08,
-                  fundChart[4].합계*0.08,
-                  fundChart[5].합계*0.08,
-                  fundChart[6].합계*0.08,
-                  fundChart[7].합계*0.08,
-                  fundChart[8].합계*0.08,
-                  fundChart[9].합계*0.08,
-                  fundChart[10].합계*0.08,
-                  fundChart[11].합계*0.08]
+    const data2 = [fundChart[0].합계*0.9,
+                   fundChart[1].합계*0.9,
+                   fundChart[2].합계*0.9,
+                   fundChart[3].합계*0.9,
+                   fundChart[4].합계*0.9,
+                   fundChart[5].합계*0.9,
+                   fundChart[6].합계*0.9,
+                   fundChart[7].합계*0.9,
+                   fundChart[8].합계*0.9,
+                   fundChart[9].합계*0.9,
+                   fundChart[10].합계*0.9,
+                   fundChart[11].합계*0.9]
+    const data3 = [fundChart[0].합계*0.1,
+                  fundChart[1].합계*0.1,
+                  fundChart[2].합계*0.1,
+                  fundChart[3].합계*0.1,
+                  fundChart[4].합계*0.1,
+                  fundChart[5].합계*0.1,
+                  fundChart[6].합계*0.1,
+                  fundChart[7].합계*0.1,
+                  fundChart[8].합계*0.1,
+                  fundChart[9].합계*0.1,
+                  fundChart[10].합계*0.1,
+                  fundChart[11].합계*0.1]
 
     return [
       {
@@ -81,7 +81,7 @@ const MainChartExample = attributes => {
         data: data1
       },
       {
-        label: '펀드 등록자',
+        label: '등록자 수입',
         backgroundColor: 'transparent',
         borderColor: brandSuccess,
         pointHoverBackgroundColor: brandSuccess,
@@ -89,7 +89,7 @@ const MainChartExample = attributes => {
         data: data2
       },
       {
-        label: '',
+        label: '은행 수입',
         backgroundColor: 'transparent',
         borderColor: brandDanger,
         pointHoverBackgroundColor: brandDanger,
@@ -152,6 +152,7 @@ const MainChartExample = attributes => {
                 fundChart[10].날짜,
                 fundChart[11].날짜]}
     />
+
   )
 }
 

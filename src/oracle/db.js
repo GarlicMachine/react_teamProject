@@ -1192,7 +1192,7 @@ app.get('/savings/SavingsApproveList', function(request, response){
         console.log('접속 성공');
         let query = "select j.j_name 상품이름, j.j_join_date 적금가입날짜, j.account 계좌번호, j.j_rate 적금금리," 
         + "j.j_method 적금방법, j.j_end_date 적금만기일, a.accountState 계좌상태 from account_info a "
-        + "JOIN installment_savings j ON a.account = j.account WHERE accountState = '대기' ";
+        + "JOIN installment_savings j ON a.account = j.account WHERE accountState = '정지' ";
         
         connection.execute(query,[], {outFormat:oracledb.OBJECT}, function(err, result){
             if(err){
@@ -2470,6 +2470,181 @@ app.get('/FundChart', function(request, response){
     }
 });
 
+app.get('/loanChart', function(request, response){
+    console.log('---대출차트---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = "select TO_CHAR(b.dt, 'YYYY-MM') as 날짜"+
+                            ", NVL(SUM(l.d_balance),0) as 원금 "+
+                            ", NVL(SUM(h1.d_his_amount),0) as 원금상환 "+
+                            ", NVL(SUM(h2.d_his_amount),0) as 이자상환 "+
+                            ", NVL(SUM(h3.d_his_amount),0) as 중도상환수수료 "+
+                            ", NVL(SUM(h4.d_his_amount),0) as 연체료  "+
+                       "FROM loans l "+
+                 "RIGHT JOIN ( SELECT  TRUNC(add_months(sysdate,-11),'mm') -1+ LEVEL AS dt "+
+                                  " FROM dual  "+
+                               " CONNECT BY LEVEL <= sysdate - TRUNC(add_months(sysdate,-11),'mm') +1)   b "+
+                        " ON TO_CHAR(l.d_start_date,'YY-MM-DD')=b.dt "+
+                        " LEFT JOIN (SELECT * "+
+                        "        FROM loans_history "+
+                        "        WHERE d_his_state='원금') h1 "+
+                        "   ON b.dt=TO_CHAR(h1.d_his_date,'YY-MM-DD') "+
+                        "    LEFT JOIN (SELECT * "+
+                        "               FROM loans_history "+
+                        "              WHERE d_his_state='이자') h2 "+
+                        "      ON b.dt=TO_CHAR(h2.d_his_date,'YY-MM-DD') "+
+                        " LEFT JOIN (SELECT * "+
+                        " FROM loans_history "+
+                        " WHERE d_his_state='중도상환수수료') h3 "+
+                        " ON b.dt=TO_CHAR(h3.d_his_date,'YY-MM-DD') "+
+                        " LEFT JOIN (SELECT * "+
+                        " FROM loans_history "+
+                        " WHERE d_his_state='연체료') h4 "+
+                        "ON b.dt=TO_CHAR(h4.d_his_date,'YY-MM-DD') "+
+                    "GROUP BY TO_CHAR(b.dt, 'YYYY-MM') "+
+                    "ORDER BY TO_CHAR(b.dt, 'YYYY-MM') ";
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            console.log('list size:' + rowList.length);
+        });
+    }
+});
+
+// 
+app.get('/savingsChart', function(request, response){
+    console.log('---예적금 차트---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = " SELECT TO_CHAR(b.dt, 'YYYY-MM') 날짜, NVL(sum(a.money),0) 적금,NVL(sum(c.money),0) 예금 "+
+                      " FROM (select t.in_outDate,t.money "+
+                           "  FROM account_transfer t "+
+                              " join account_info a "+
+                              " on a.account = t.sender_account "+
+                              " where t.in_comment = '만기이자지급' "+
+                              " and t.account = '33-09-000001' "+
+                              " and a.accounttype='적금') a "+
+                " RIGHT JOIN ( SELECT  TRUNC(add_months(sysdate,-11),'mm') -1+ LEVEL AS dt "+
+                                     " FROM dual  "+
+                                    " CONNECT BY LEVEL <= sysdate - TRUNC(add_months(sysdate,-11),'mm') +1)   b "+
+                       " ON b.dt=TO_CHAR(a.in_outDate,'YY-MM-DD') "+
+                " LEFT JOIN( select  t.in_outDate,t.money  "+
+                            " FROM account_transfer t "+
+                            " join account_info a "+
+                            " on a.account = t.sender_account "+
+                            " where t.in_comment = '만기이자지급' "+
+                            " and t.account = '33-09-000001' "+
+                            " and a.accounttype='예금') c "+
+                        " ON b.dt=TO_CHAR( c.in_outDate,'YY-MM-DD') "+
+                    " GROUP BY TO_CHAR(b.dt, 'YYYY-MM') "+
+                    " ORDER BY TO_CHAR(b.dt, 'YYYY-MM')";
+                       console.log('접속 성공 2');
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            console.log('접속 성공 3');
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            console.log('list size:' + rowList.length);
+        });
+    }
+});
+
+//
+app.get('/SubscriptionChart', function(request, response){
+    console.log('--상품가입수 차트---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = " SELECT COUNT( DISTINCT( l.d_key ) ) 대출 ,COUNT( DISTINCT( f.y_key ) ) 예금 ,COUNT( DISTINCT( i.j_key ) ) 적금 "+
+                        " FROM (select * "+
+                            " from Loans "+
+                            " where d_state in (1,2)) l "+
+                    " RIGHT JOIN ( SELECT  TRUNC(add_months(sysdate,-11),'mm') -1+ LEVEL AS dt "+
+                                    " FROM dual  "+
+                                " CONNECT BY LEVEL <= sysdate - TRUNC(add_months(sysdate,-11),'mm') +1)   b "+
+                        " ON b.dt=TO_CHAR(l.d_start_date,'YY-MM-DD') "+
+                        " LEFT JOIN fixed_deposit f "+
+                        " ON b.dt=TO_CHAR(f.y_join_date,'YY-MM-DD') "+
+                        "  LEFT JOIN installment_savings i "+
+                        " ON b.dt=TO_CHAR(i.j_join_date,'YY-MM-DD') ";
+        connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
+            console.log('접속 성공 3');
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log(result.rows);   // 데이터
+            doRelease(connection, result.rows); // connection 해제
+            response.send(result.rows);
+        });
+    });
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            console.log('list size:' + rowList.length);
+        });
+    }
+});
 // 디비 연결해제
 
 // 라우터 객체를 app 객체에 등록
