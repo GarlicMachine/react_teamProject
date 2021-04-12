@@ -30,10 +30,10 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        <CIcon
-          className="c-sidebar-brand-full"
+      <CIcon
+        src="/images/kosbanklogo.png"
           name="logo-negative"
-          height={35}
+          style={{width:"100%",height:"100%",padding:"30px"}}
         />
         <CIcon
           className="c-sidebar-brand-minimized"
