@@ -43,7 +43,7 @@ async function getUsers() {
 }
 
 
-const fields = ['이름','아이디','주민번호']
+const fields = ['이름','아이디','전화번호','주민번호', '직업']
 
 const MemberInfo = () => {
 
@@ -67,47 +67,8 @@ const MemberInfo = () => {
       <CCard>
         <CCardHeader>
           회원 리스트
-          <DocsLink name="CNavbar"/>
         </CCardHeader>
         <CCardBody>
-
-          <CNavbar expandable="sm" color="info" >
-            <CToggler inNavbar onClick={() => setIsOpen(!isOpen)}/>
-            <CNavbarBrand>
-              회원 리스트
-            </CNavbarBrand>
-            <CCollapse show={isOpen} navbar>
-              <CNavbarNav>
-                <CNavLink>Home</CNavLink>
-              </CNavbarNav>
-              <CNavbarNav className="ml-auto">
-                <CForm inline>
-                  <CInput
-                    className="mr-sm-2"
-                    placeholder="회원이름"
-                    size="sm"
-                  />
-                  <CButton color="light" className="my-2 my-sm-0" type="submit">검색</CButton>
-                </CForm>
-                <CDropdown inNav>
-                  
-                  
-                  
-                </CDropdown>
-                <CDropdown inNav>
-                  
-                  <CDropdownToggle color="primary">
-                    임시
-                  </CDropdownToggle>
-                  <CDropdownMenu>
-                    <CDropdownItem>test</CDropdownItem>
-                    <CDropdownItem>test2</CDropdownItem>
-                  </CDropdownMenu>
-                </CDropdown>
-              </CNavbarNav>
-            </CCollapse>
-          </CNavbar>
-
           <CDataTable
               items={accData2}
               fields={fields}
@@ -118,7 +79,8 @@ const MemberInfo = () => {
               itemsPerPage={7}
               pagination
               clickableRows
-               onRowClick={(item) => history.push(`/MemberDetail/${item.아이디}`)} 
+              tableFilter
+              onRowClick={(item) => history.push(`/MemberDetail/${item.아이디}`)} 
             />
 
           

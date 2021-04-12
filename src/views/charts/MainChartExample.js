@@ -1,29 +1,79 @@
 import React from 'react'
-import { CChartLine } from '@coreui/react-chartjs'
+import { CChartLine, CChartRadar } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
+import { useAsync } from 'react-async';
+import axios from 'axios';
 
 const brandSuccess = getStyle('success') || '#4dbd74'
 const brandInfo = getStyle('info') || '#20a8d8'
 const brandDanger = getStyle('danger') || '#f86c6b'
 
+
+async function getUsers() {
+  const response = await axios.get(
+      '/FundChart'
+  );
+  return response.data;
+}
+
+//props
 const MainChartExample = attributes => {
+  
+  const { data: fundChart, error, isLoading, reload } = useAsync({
+    promiseFn: getUsers
+  });
+
+
   const random = (min, max)=>{
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
+  if (isLoading) return <div>로딩중..</div>;
+  if (error) return <div>에러가 발생했습니다</div>;
+  if (!fundChart) return <button onClick={reload}>불러오기</button>;
+  
   const defaultDatasets = (()=>{
-    let elements = 27
-    const data1 = []
-    const data2 = []
-    const data3 = []
-    for (let i = 0; i <= elements; i++) {
-      data1.push(random(50, 200))
-      data2.push(random(80, 100))
-      data3.push(65)
-    }
+    let elements = 11
+    const data1 = [fundChart[0].합계,
+                    fundChart[1].합계,
+                    fundChart[2].합계,
+                    fundChart[3].합계,
+                    fundChart[4].합계,
+                    fundChart[5].합계,
+                    fundChart[6].합계,
+                    fundChart[7].합계,
+                    fundChart[8].합계,
+                    fundChart[9].합계,
+                    fundChart[10].합계,
+                    fundChart[11].합계]
+    const data2 = [fundChart[0].합계*0.9,
+                   fundChart[1].합계*0.9,
+                   fundChart[2].합계*0.9,
+                   fundChart[3].합계*0.9,
+                   fundChart[4].합계*0.9,
+                   fundChart[5].합계*0.9,
+                   fundChart[6].합계*0.9,
+                   fundChart[7].합계*0.9,
+                   fundChart[8].합계*0.9,
+                   fundChart[9].합계*0.9,
+                   fundChart[10].합계*0.9,
+                   fundChart[11].합계*0.9]
+    const data3 = [fundChart[0].합계*0.1,
+                  fundChart[1].합계*0.1,
+                  fundChart[2].합계*0.1,
+                  fundChart[3].합계*0.1,
+                  fundChart[4].합계*0.1,
+                  fundChart[5].합계*0.1,
+                  fundChart[6].합계*0.1,
+                  fundChart[7].합계*0.1,
+                  fundChart[8].합계*0.1,
+                  fundChart[9].합계*0.1,
+                  fundChart[10].합계*0.1,
+                  fundChart[11].합계*0.1]
+
     return [
       {
-        label: 'My First dataset',
+        label: '펀드 수입',
         backgroundColor: hexToRgba(brandInfo, 10),
         borderColor: brandInfo,
         pointHoverBackgroundColor: brandInfo,
@@ -31,7 +81,7 @@ const MainChartExample = attributes => {
         data: data1
       },
       {
-        label: 'My Second dataset',
+        label: '등록자 수입',
         backgroundColor: 'transparent',
         borderColor: brandSuccess,
         pointHoverBackgroundColor: brandSuccess,
@@ -39,14 +89,13 @@ const MainChartExample = attributes => {
         data: data2
       },
       {
-        label: 'My Third dataset',
+        label: '은행 수입',
         backgroundColor: 'transparent',
         borderColor: brandDanger,
         pointHoverBackgroundColor: brandDanger,
         borderWidth: 1,
-        borderDash: [8, 5],
         data: data3
-      }
+      } 
     ]
   })()
 
@@ -65,9 +114,7 @@ const MainChartExample = attributes => {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              maxTicksLimit: 5,
-              stepSize: Math.ceil(250 / 5),
-              max: 250
+              maxTicksLimit: 5
             },
             gridLines: {
               display: true
@@ -92,8 +139,20 @@ const MainChartExample = attributes => {
       {...attributes}
       datasets={defaultDatasets}
       options={defaultOptions}
-      labels={['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']}
+      labels={[fundChart[0].날짜,
+                fundChart[1].날짜,
+                fundChart[2].날짜,
+                fundChart[3].날짜,
+                fundChart[4].날짜,
+                fundChart[5].날짜,
+                fundChart[6].날짜,
+                fundChart[7].날짜,
+                fundChart[8].날짜,
+                fundChart[9].날짜,
+                fundChart[10].날짜,
+                fundChart[11].날짜]}
     />
+
   )
 }
 
