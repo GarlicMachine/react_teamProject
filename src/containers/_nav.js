@@ -212,13 +212,8 @@ const _nav =  [
       },
       {
         _tag: 'CSidebarNavItem',
-        name: '챗봇',
+        name: '채팅상담',
         to: '/ServiceCenter/Chatbot',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: '챗봇설정',
-        to: '/ServiceCenter/AdminChatbot',
       },
     ],
   },
