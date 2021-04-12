@@ -36,8 +36,7 @@ const LoanList = () => {
         {key : '대출금액'}, 
         {key : '대출상태'}, 
         {key : '조회'}, 
-        {key : '대출승인'},
-        {key : '계좌승인'}
+        {key : '승인'}
     ]
 
     const {data : board, error, isLoading, reload} = useAsync ({
@@ -83,42 +82,30 @@ const LoanList = () => {
                                             <CButton size="sm" color="primary" onClick={() => history.push(`/Loans/LoanList/LoanDetail/${item.대출번호}`)}>조회</CButton>
                                         </td>
                                     ),
-									'대출승인' : 
-									(item)=>(
+                           '승인' : 
+                           (item)=>(
                                         <>
                                             {item.대출상태=== 0 ?
                                                 <>
                                                     <td>
                                                         <CForm action='/Loans/LoanList/LoanAprovalAction' method="POST">
                                                             <input type="hidden" id ="D_KEY" name="D_KEY" value={item.대출번호}></input>
-                                                            <CButton size="sm" type="submit" className="btn-facebook btn-brand mr-1 mb-1" >승인</CButton>
-                                                        </CForm>
-                                                    </td>
-                                                </>
-                                            :
-                                                <td></td>
-                                            }
-                                        </>
-									),
-                                    '계좌승인' : 
-									(item)=>(
-                                        <>
-                                            {item.대출상태=== 1 ?
-                                                <>
-                                                    <td>
-                                                        <CForm action='/Loans/LoanList/LoanAprovalAction2' method="POST">
                                                             <input type="hidden" id ="ACCOUNT" name="ACCOUNT" value={item.계좌번호}></input>
                                                             <input type="hidden" id ="ACCOUNTSTATE" name="ACCOUNTSTATE" value={'정상'}></input>
                                                             <CButton size="sm" type="submit" className="btn-facebook btn-brand mr-1 mb-1" >승인</CButton>
                                                         </CForm>
+                                                        <CForm action='/Loans/LoanList/LoanRejectAction' method="POST">
+                                                            <input type="hidden" id ="ACCOUNT" name="ACCOUNT" value={item.계좌번호}></input>
+                                                                <CButton size="sm" type="submit" className="btn-youtube btn-brand mr-1 mb-1">거절</CButton>
+                                                        </CForm>
                                                     </td>
                                                 </>
                                             :
                                                 <td></td>
                                             }
                                         </>
-									)
-								}}
+                           )
+                        }}
                             />
                             <CPagination 
                                 activePage={page}

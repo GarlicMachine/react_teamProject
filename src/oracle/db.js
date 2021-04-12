@@ -1622,12 +1622,87 @@ app.get('/Loans/LoanList/LoanDetail/:D_KEY', function(request, response){
 // 디비 연결해제
 // 박서하
 // --------------------------------------------
+// --------------------------------------------
+// 박서하
+// 대출 거절
+router.post('/Loans/LoanList/LoanRejectAction', function(request, response){
+    console.log('---대출 거절(대출)---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'DELETE Loans WHERE ACCOUNT = :ACCOUNT';
+        var binddata = [
+            request.body.ACCOUNT
+        ]
 
+        connection.execute(query, binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log('Row Update : ' + result.rowsAffected);   // 데이터
+            doRelease(connection, result.rowsAffected); // connection 해제
+            response.redirect('#/Loans/LoanList');
+        });
+    });
+    console.log('---대출 거절(계좌정보)---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'DELETE Account_info WHERE ACCOUNT = :ACCOUNT';
+        var binddata = [
+            request.body.ACCOUNT
+        ]
+
+        connection.execute(query, binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log('Row Update : ' + result.rowsAffected);   // 데이터
+            doRelease(connection, result.rowsAffected); // connection 해제
+            response.redirect('#/Loans/LoanList');
+        });
+    });    
+    // 디비 연결 해제
+    function doRelease(connection, rowList){
+        connection.release(function(err, rows){
+            if(err){
+                console.error(err.message);
+            }
+            // DB 종료까지 모두 완료되었을시 응답 데이터 반환
+            console.log(rowList);
+        });
+    }
+});
+// 디비 연결해제
+// 박서하
+// --------------------------------------------
 // --------------------------------------------
 // 박서하
 // 대출 승인
 router.post('/Loans/LoanList/LoanAprovalAction', function(request, response){
-    console.log('---대출 승인---');
+    console.log('---대출 승인(대출)---');
     oracledb.getConnection({
         user : dbConfig.user,
         password : dbConfig.password,
@@ -1643,6 +1718,36 @@ router.post('/Loans/LoanList/LoanAprovalAction', function(request, response){
         let query = 'UPDATE Loans SET d_state = 1 WHERE D_KEY = :D_KEY';
         var binddata = [
             request.body.D_KEY
+        ]
+
+        connection.execute(query, binddata, function(err, result){
+            if(err){
+                console.error(err.message);
+                doRelease(connection);
+                return;
+            }
+            console.log('Row Update : ' + result.rowsAffected);   // 데이터
+            doRelease(connection, result.rowsAffected); // connection 해제
+            response.redirect('#/Loans/LoanList');
+        });
+    });
+    console.log('---대출 승인(계좌정보)---');
+    oracledb.getConnection({
+        user : dbConfig.user,
+        password : dbConfig.password,
+        connectString : dbConfig.connectString
+    },
+    function(err, connection){
+        if(err){
+            console.log('접속 실패', err);
+            console.error(err.message);
+            return;
+        }
+        console.log('접속 성공');
+        let query = 'UPDATE Account_info SET accountState = :ACCOUNTSTATE WHERE ACCOUNT = :ACCOUNT';
+        var binddata = [
+            request.body.ACCOUNTSTATE,
+            request.body.ACCOUNT
         ]
 
         connection.execute(query, binddata, function(err, result){
