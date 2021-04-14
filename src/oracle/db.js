@@ -2446,7 +2446,7 @@ router.post('/LoansProduct/LoansProductList/LoansProductDeleteAction', function(
             return;
         }
         console.log('접속 성공');
-    let query = "UPDATE Loans_product SET d_summary='상품판매종료'  WHERE D_NAME = :D_NAME";
+    let query = "DELETE Loans_product WHERE D_NAME = :D_NAME";
     var binddata = [
         request.body.D_NAME
     ]
