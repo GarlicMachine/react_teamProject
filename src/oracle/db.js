@@ -38,7 +38,7 @@ app.get('/userAccList', function(request, response){
             return;
         }
         console.log('접속 성공');
-        let query = 'SELECT m.name 이름, m.jumin 주민번호, a.account 계좌, a.accountstate 계좌상태, a.accounttype 계좌종류, a.balance 잔액 FROM Members m JOIN account_info a ON m.id = a.id';
+        let query = "SELECT m.name 이름, m.jumin 주민번호, a.account 계좌, a.accountstate 계좌상태, a.accounttype 계좌종류, a.balance 잔액 FROM Members m JOIN account_info a ON m.id = a.id WHERE a.accounttype = '입출금'";
         
         connection.execute(query, [], {outFormat:oracledb.OBJECT}, function(err, result){
             if(err){
@@ -2473,6 +2473,7 @@ router.post('/LoansProduct/LoansProductList/LoansProductDeleteAction', function(
     }
 });
 
+//김소림
 router.post('/AdminDepositProduct/DepositProductAdd', function(request, response){
     console.log('---예금 상품 등록---');
     oracledb.getConnection({
